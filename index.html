@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MDM On-Demand Actions — Live Analytics, Insights & Actions for Entra ID and Intune. PowerShell & WPF tool for on-demand operations with zero trust principles and granular controls.">
+    <meta name="author" content="Satish Singhi">
+    <meta property="og:title" content="MDM On-Demand Actions (MDM-ODA) — Intune & Entra ID Automation">
+    <meta property="og:description" content="PowerShell & WPF tool for live analytics, group management, device management, and on-demand actions across Entra ID and Intune.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://satishsinghi-gh.github.io/mdm-oda/">
+    <meta property="og:image" content="https://satishsinghi-gh.github.io/mdm-oda/images/hero-banner.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MDM On-Demand Actions (MDM-ODA)">
+    <meta name="twitter:description" content="Live Analytics, Insights & Actions for Entra ID and Intune">
+    <meta name="twitter:image" content="https://satishsinghi-gh.github.io/mdm-oda/images/hero-banner.png">
+    <title>MDM On-Demand Actions (MDM-ODA) — Intune & Entra ID Automation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #ffffff;
+        }
+
+        code, pre {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        nav .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #007A00;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #6b7280;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #007A00;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, #007A00 0%, #006400 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .hero .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-meta {
+            font-size: 0.875rem;
+            opacity: 0.85;
+        }
+
+        .hero-meta a {
+            color: #5DC98B;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .hero-meta a:hover {
+            color: white;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        article {
+            padding: 3rem 0;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: #f9fafb;
+            border-left: 4px solid #007A00;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .toc h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .toc ol {
+            margin-left: 1.5rem;
+        }
+
+        .toc li {
+            margin-bottom: 0.75rem;
+        }
+
+        .toc a {
+            color: #007A00;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .toc a:hover {
+            color: #006400;
+            text-decoration: underline;
+        }
+
+        /* Sections */
+        section {
+            padding: 3rem 0;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        section:first-of-type {
+            border-top: none;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 2rem 0 1rem 0;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin: 1.5rem 0 0.75rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 1.5rem 0 1.5rem 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+        }
+
+        /* Callout Boxes */
+        .callout {
+            padding: 1.5rem;
+            border-left: 4px solid;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            background-color: #f9fafb;
+        }
+
+        .callout-info {
+            border-left-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        .callout-info strong {
+            color: #1e40af;
+        }
+
+        .callout-success {
+            border-left-color: #10b981;
+            background-color: #ecfdf5;
+        }
+
+        .callout-success strong {
+            color: #065f46;
+        }
+
+        .callout-warning {
+            border-left-color: #f59e0b;
+            background-color: #fffbeb;
+        }
+
+        .callout-warning strong {
+            color: #92400e;
+        }
+
+        .callout-danger {
+            border-left-color: #ef4444;
+            background-color: #fef2f2;
+        }
+
+        .callout-danger strong {
+            color: #7f1d1d;
+        }
+
+        .callout p {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Figures */
+        figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        figcaption {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            color: #007A00;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        table thead {
+            background: #006400;
+            color: white;
+        }
+
+        table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Architecture Flow */
+        .arch-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .arch-box {
+            background: linear-gradient(135deg, #007A00 0%, #006400 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 150px;
+            flex: 1;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .arch-arrow {
+            color: #007A00;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Tags/Pills */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 2rem 0;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #f3f4f6;
+            color: #374151;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid #d1d5db;
+        }
+
+        .tag:hover {
+            background: #e5e7eb;
+        }
+
+        /* Step Block Timeline */
+        .step-block {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .step-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: linear-gradient(135deg, #007A00 0%, #006400 100%);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .step-content h4 {
+            margin-top: 0;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 640px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-card {
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            transition: box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card h4 {
+            color: #007A00;
+            margin-top: 0;
+        }
+
+        /* Highlights Section */
+        .highlight-boxes {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 640px) {
+            .highlight-boxes {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .highlight-box {
+            background: #f9fafb;
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid #007A00;
+        }
+
+        .highlight-box h3 {
+            margin-top: 0;
+            font-size: 1.25rem;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        footer .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: #6b7280;
+        }
+
+        footer a {
+            color: #007A00;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: #006400;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            nav .nav-links {
+                display: none;
+            }
+
+            .arch-flow {
+                flex-direction: column;
+            }
+
+            .arch-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="logo">MDM-ODA</div><span style="color:#5DC98B;font-size:0.75rem;font-weight:500;margin-left:0.5rem;">v0.66</span>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="container">
+            <div class="hero-badge">Intune & Entra ID Automation</div>
+            <h1>MDM On-Demand Actions <span style="color:#FFD700;font-size:0.85em;">&#x26A1;</span></h1>
+            <p>Live Analytics, Insights & Actions</p><p style="font-size:0.9rem;opacity:0.85;margin-top:0.5rem;">Version 0.66</p>
+            <div class="hero-meta">
+                Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — March 2026 |
+                <a href="https://github.com/satishsinghi-gh/mdm-oda">GitHub Repository</a>
+            </div>
+        </div>
+    </div>
+
+    <article>
+        <div class="container">
+            <div class="toc">
+                <h2>Table of Contents</h2>
+                <ol>
+                    <li><a href="#overview">Overview & Mission</a></li>
+                    <li><a href="#highlights">Highlights</a></li>
+                    <li><a href="#features-group">Features — Group Management</a></li>
+                    <li><a href="#features-device">Features — Device Management</a></li>
+                    <li><a href="#productivity">Productivity Features</a></li>
+                    <li><a href="#prerequisites">Prerequisites</a></li>
+                    <li><a href="#permissions">Permissions</a></li>
+                    <li><a href="#safeguards">Safety, Validation & Auth Design</a></li>
+                    <li><a href="#getting-started">Getting Started</a></li>
+                    <li><a href="#roadmap">Roadmap</a></li>
+                </ol>
+            </div>
+
+            <section id="overview">
+                <h2>Overview & Mission</h2>
+                <p>
+                    MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-demand operations. Built with attention to detail for the granular challenges faced by support teams, enabling project teams to get reliable, meaningful, up-to-date insights and reports on the go. Built with safeguards to prevent accidental actions, keeping Zero Trust and least privilege as top priority.
+                </p>
+
+                <h3>Project Mission</h3>
+                <ul>
+                    <li>To maximize operational efficiency</li>
+                    <li>To automate variety of On-Demand actions that need to be performed on the go</li>
+                    <li>To deliver a thoughtful, well-crafted experience that IT professionals genuinely enjoy using</li>
+                    <li>To bring together data from different portals/pages using a single page — no browser tab madness</li>
+                    <li>To surface actionable insights directly — no Excel exports, no manual pivot tables, just immediate clarity for faster triage</li>
+                    <li>To automate bulk actions on-demand that are natively not possible</li>
+                    <li>To reduce human errors using validation workflows</li>
+                    <li>To save hours of efforts and endless fatigue caused by repetitive tasks</li>
+                    <li>No manual setup needed, no admin rights needed — just plug and play</li>
+                    <li>To make Click-Ops great again</li>
+                </ul>
+            </section>
+
+            <section id="highlights">
+                <h2>Highlights</h2>
+
+                <div class="highlight-boxes">
+                    <div class="highlight-box">
+                        <h3>Lightweight & Powerful</h3>
+                        <p>Enterprise-grade functionality with polished visuals, built entirely on native Windows components — PowerShell 7 and WPF. Zero third-party dependencies, zero licensing. All data is live from Microsoft Graph — no Power BI refresh cycles, no stale dashboards.</p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h3>Security & Guardrails</h3>
+                        <p>Delegated auth flow for least privilege — use your Tenant & Client ID. Validation & preview before each write action. Live verbose logging for transparency. No admin rights required.</p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h3>Productivity</h3>
+                        <p>Complex on-demand actions with minimum effort. In-page live table output with flexibility to select cells, copy individual cell/row/all, or export to XLSX.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="features-group">
+                <h2>Features — Group Management</h2>
+
+                <figure>
+                    <img src="images/blades-overview.png" alt="MDM-ODA Group Management Blades Overview">
+                    <figcaption>MDM-ODA Group Management interface showing all available operations</figcaption>
+                </figure>
+
+                <h3>Search Entra Objects</h3>
+                <p>Keyword search across multiple Entra object types from a single page. Filter by object type using keywords.</p>
+                <figure>
+                    <img src="images/search-entra-objects.png" alt="Search Entra Objects interface">
+                    <figcaption>Search across Users, Groups, Devices, and Service Principals with real-time filtering</figcaption>
+                </figure>
+
+                <h3>List Group Members</h3>
+                <p>List members from multiple groups with a single click. View Object Name/UPN, Object Type, Object ID and source group.</p>
+                <figure>
+                    <img src="images/list-group-members.png" alt="List Group Members interface">
+                    <figcaption>Query members from multiple groups simultaneously with comprehensive details</figcaption>
+                </figure>
+
+                <h3>Object Membership</h3>
+                <p>Find group membership for bulk items (Users/Devices/Groups).</p>
+                <figure>
+                    <img src="images/object-membership.png" alt="Object Membership interface">
+                    <figcaption>Bulk lookup of group membership across users, devices, and groups</figcaption>
+                </figure>
+
+                <h3>Find Groups by Owners</h3>
+                <p>Enter UPNs, get all groups they own with Group Type, Membership Type, and Member Count.</p>
+                <figure>
+                    <img src="images/find-groups-by-owners.png" alt="Find Groups by Owners interface">
+                    <figcaption>Identify all groups owned by specific users with detailed ownership insights</figcaption>
+                </figure>
+
+                <h3>Create Group</h3>
+                <p>Create Security/M365 Group while assigning bulk owners and adding bulk members (UPN, Device Name/ID, Group Name/ID) or set a dynamic query — all from a single page. No CSV, no browser navigation.</p>
+                <figure>
+                    <img src="images/create-group.png" alt="Create Group interface">
+                    <figcaption>One-page group creation with bulk owner assignment and dynamic membership rules</figcaption>
+                </figure>
+
+                <h3>Set Bulk Owners on Bulk Groups</h3>
+                <p>Many-to-many owner assignment. Un-owned groups haunt every organization — groups without owners or with outdated ownership cause confusion about use, purpose and accountability.</p>
+                <figure>
+                    <img src="images/set-bulk-owners.png" alt="Set Bulk Owners interface">
+                    <figcaption>Assign multiple owners to multiple groups in a single operation</figcaption>
+                </figure>
+
+                <h3>Add User Devices to Groups</h3>
+                <p>Game changer. Bulk add user devices to groups with filters for Platform, Ownership and Intune enrollment state. What was once a nightmare is now a cakewalk.</p>
+                <figure>
+                    <img src="images/add-user-devices.png" alt="Add User Devices to Groups interface">
+                    <figcaption>Intelligently add user devices to groups with comprehensive filtering options</figcaption>
+                </figure>
+
+                <h3>Find Common/Distinct Groups</h3>
+                <p>Compare multiple objects to find commonalities or distinction in group membership. No more CSV exports and VLOOKUPs.</p>
+                <figure>
+                    <img src="images/find-common-distinct.png" alt="Find Common/Distinct Groups interface">
+                    <figcaption>Venn diagram analysis of group membership across multiple users or devices</figcaption>
+                </figure>
+
+                <h3>Compare Groups</h3>
+                <p>Compare members of multiple groups and identify Common or Distinct members between them.</p>
+                <figure>
+                    <img src="images/compare-groups.png" alt="Compare Groups interface">
+                    <figcaption>Side-by-side group comparison with common and distinct member identification</figcaption>
+                </figure>
+
+                <h3>Additional Group Management Features</h3>
+                <p>
+                    Beyond the primary operations above, MDM-ODA also supports <strong>Remove Groups</strong>, <strong>Rename Groups</strong>, <strong>Set Dynamic Query on Existing Groups</strong>, and <strong>Export Members</strong>. These operations follow the same validation-before-write paradigm and integrate seamlessly with the broader group management workflow. Additionally, <strong>Bulk Group Removal</strong> enables safe deletion of multiple groups with preview and confirmation steps, making organizational cleanup a structured and auditable process.
+                </p>
+            </section>
+
+            <section id="features-device">
+                <h2>Features — Device Management</h2>
+
+                <h3>Device Info</h3>
+                <p>
+                    Comprehensive User & Device info from Entra & Intune based on UPNs, Serial Numbers, Object IDs and even User/Device Groups (recursive object detection). Uses filters for Platform & Ownership. Shows 30+ fields including Entra/Intune device details, OS info, ownership, activity ranges, Autopilot status, and user info.
+                </p>
+                <figure>
+                    <img src="images/device-info.png" alt="Device Info interface">
+                    <figcaption>Unified device information from Entra ID and Intune with extensive field coverage</figcaption>
+                </figure>
+
+                <h3>Intune Policy Assignments</h3>
+                <p>Runtime or project decisions, get instant insights about Intune policies, Assignment Groups, Assignment Filters and associated Filter Types. Generate output filtered by keywords, Policy Type, Sub-Type, OS platform.</p>
+                <figure>
+                    <img src="images/policy-assignments-1.png" alt="Intune Policy Assignments interface - Part 1">
+                    <figcaption>Browse all Intune policies with assignment group visibility</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/policy-assignments-2.png" alt="Intune Policy Assignments interface - Part 2">
+                    <figcaption>Filter policies by type, sub-type, and platform for targeted insights</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/policy-assignments-3.png" alt="Intune Policy Assignments interface - Part 3">
+                    <figcaption>View assignment filters and their associated filter types</figcaption>
+                </figure>
+            </section>
+
+            <section id="productivity">
+                <h2>Productivity Features</h2>
+
+                <h3>Session Notes</h3>
+                <p>Built-in lightweight floating notepad, easy to bring up or minimize. Holds notes during the session, no disk storage.</p>
+                <figure>
+                    <img src="images/session-notes.png" alt="Session Notes feature">
+                    <figcaption>In-session notes panel for quick reference and task tracking</figcaption>
+                </figure>
+
+                <h3>Keyword Filter</h3>
+                <p>Every table output has a single filter across all columns. Type any keyword to instantly filter results across all columns in real-time.</p>
+                <figure>
+                    <img src="images/verbose-logging.png" alt="Keyword Filter in action">
+                    <figcaption>Type any keyword to instantly filter results across all columns in real-time</figcaption>
+                </figure>
+
+                <h3>Verbose Logging</h3>
+                <p>Real-time verbose logging of every operation. Logs stored locally for audit trails and troubleshooting.</p>
+                <figure>
+                    <img src="images/prereq-handling-2.png" alt="Verbose Logging in action">
+                    <figcaption>Real-time verbose log output showing operation progress and API call details</figcaption>
+                </figure>
+
+                <h3>Additional Productivity Controls</h3>
+                <ul>
+                    <li><strong>Clear Inputs</strong> — Clear the page and start fresh with a single click</li>
+                    <li><strong>Stop Operation</strong> — Cancel ongoing operations at any time without waiting for completion</li>
+                    <li><strong>Feedback</strong> — Built-in feedback mechanism to report issues or suggest improvements</li>
+                </ul>
+            </section>
+
+            <section id="prerequisites">
+                <h2>Prerequisites</h2>
+
+                <h3>System Requirements</h3>
+                <div class="step-block">
+                    <div class="step-number">
+                        <div class="step-circle">1</div>
+                        <div class="step-content">
+                            <h4>Windows 11 with WPF</h4>
+                            <p>Windows Presentation Foundation is built-in to Windows 11. No additional installation needed.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-block">
+                    <div class="step-number">
+                        <div class="step-circle">2</div>
+                        <div class="step-content">
+                            <h4>PowerShell 7</h4>
+                            <p>Handled automatically by the script. Auto-installs via winget if missing. Requires internet connectivity to PowerShell Gallery and GitHub winget repository.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-block">
+                    <div class="step-number">
+                        <div class="step-circle">3</div>
+                        <div class="step-content">
+                            <h4>Internet Connectivity</h4>
+                            <p>Required for downloading PowerShell modules from PowerShell Gallery and for connecting to Microsoft Graph API endpoints.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-block">
+                    <div class="step-number">
+                        <div class="step-circle">4</div>
+                        <div class="step-content">
+                            <h4>No Admin Rights Required</h4>
+                            <p>MDM-ODA runs in user context. Admin elevation is not necessary for standard operations.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-block">
+                    <div class="step-number">
+                        <div class="step-circle">5</div>
+                        <div class="step-content">
+                            <h4>Code Signing & WDAC</h4>
+                            <p>If Windows Defender Application Control (WDAC) or script execution policies are enforced, code signing adjustments may be needed. Consult with your security team if required.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Prerequisite Handling</h3>
+                <p>MDM-ODA includes automatic prerequisite detection and installation. The tool proactively checks for missing components and handles setup without manual intervention.</p>
+                <figure>
+                    <img src="images/prereq-handling-1.png" alt="Prerequisite Check and Installation - Part 1">
+                    <figcaption>Automatic detection of system prerequisites</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/prereq-handling-2.png" alt="Prerequisite Check and Installation - Part 2">
+                    <figcaption>Installation progress and status reporting</figcaption>
+                </figure>
+            </section>
+
+            <section id="permissions">
+                <h2>Permissions</h2>
+
+                <h3>Delegated App Permissions</h3>
+                <p>MDM-ODA requires the following Microsoft Graph delegated permissions to function:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Permission</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>User.Read</code></td>
+                            <td>Sign-in and read current user profile (/me for PIM checks)</td>
+                        </tr>
+                        <tr>
+                            <td><code>User.Read.All</code></td>
+                            <td>Resolve UPN inputs and read user properties across all functions</td>
+                        </tr>
+                        <tr>
+                            <td><code>Group.Read.All</code></td>
+                            <td>Read group properties, list groups, read types and membership rules</td>
+                        </tr>
+                        <tr>
+                            <td><code>GroupMember.Read.All</code></td>
+                            <td>List group members and query member counts</td>
+                        </tr>
+                        <tr>
+                            <td><code>Directory.Read.All</code></td>
+                            <td>TransitiveMemberOf for PIM role detection and object membership</td>
+                        </tr>
+                        <tr>
+                            <td><code>Device.Read.All</code></td>
+                            <td>Resolve devices, read properties, query registered users</td>
+                        </tr>
+                        <tr>
+                            <td><code>DeviceManagementConfiguration.Read.All</code></td>
+                            <td>Read Intune config profiles and policies for assignment lookups</td>
+                        </tr>
+                        <tr>
+                            <td><code>DeviceManagementManagedDevices.Read.All</code></td>
+                            <td>Query managed devices by Azure AD device ID or serial number</td>
+                        </tr>
+                        <tr>
+                            <td><code>DeviceManagementRBAC.Read.All</code></td>
+                            <td>Read Intune assignment filters</td>
+                        </tr>
+                        <tr>
+                            <td><code>offline_access</code></td>
+                            <td>Maintain refresh token for persistent session</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout callout-warning">
+                    <p>
+                        <strong>Key Caveat:</strong> The documented least-privileged permissions for group write operations are <code>Group.ReadWrite.All</code> and <code>GroupMember.ReadWrite.All</code>. However, based on testing, group owners with scoped Intune RBAC roles can perform all write operations (create groups, add/remove members, set owners, rename, update dynamic rules) with only the read-only scopes above. This is undocumented behaviour — it could change if Microsoft tightens enforcement. If you want to guarantee write access regardless of ownership, add <code>Group.ReadWrite.All</code> and <code>GroupMember.ReadWrite.All</code>. If you prefer least-privilege and your users are always owners of the groups they manage, the read-only set above is sufficient today.
+                    </p>
+                </div>
+
+                <h3>User Permissions</h3>
+                <p>
+                    Entra built-in roles or custom RBAC roles determine which specific resources a user can access. The app permissions set the API surface ceiling, but Intune RBAC and group ownership scope the actual access. Exact role requirements vary by operation — <strong>Group Owners</strong> is sufficient for most group management operations. For comprehensive device and policy insights, users may benefit from <strong>Intune Reader</strong> or <strong>Intune Administrator</strong> roles depending on scope.
+                </p>
+
+                <h3>Web Application Redirect URI</h3>
+                <p>For WAM (Web Account Manager) based authentication, configure the following redirect URI in your Entra app registration:</p>
+                <pre><code>ms-appx-web://Microsoft.AAD.BrokerPlugin/{Client-ID}</code></pre>
+                <p>Replace <code>{Client-ID}</code> with your actual Application (client) ID from Entra.</p>
+            </section>
+
+            <section id="safeguards">
+                <h2>Safety, Validation & Auth Design</h2>
+
+                <h3>Preventing Accidental Actions</h3>
+                <p>
+                    Every write operation in MDM-ODA is guarded by a multi-step validation pipeline. Before any change is committed to Entra or Intune, the tool enforces preview-before-write — users see exactly what will happen before it happens. Confirmation dialogs with explicit action summaries ensure that bulk operations like adding 50 devices to a group or setting owners on 20 groups cannot fire by a stray click. The Stop button is wired into every background runspace, allowing graceful cancellation mid-operation. Clear Inputs resets the entire page state without side effects. These aren't afterthoughts — they're core design decisions baked into every panel from the ground up.
+                </p>
+
+                <h3>Delegated Auth Flow — Least Privilege by Design</h3>
+                <p>
+                    MDM-ODA uses the OAuth 2.0 delegated flow exclusively — the app never holds standalone permissions. Every API call executes in the context of the signed-in user, meaning the effective permission is always the intersection of what the app registration allows and what the user's Entra/Intune roles permit. This is a deliberate design choice that prevents privilege escalation: even if the app registration has broad scopes, a user without the right RBAC role cannot perform actions beyond their assignment.
+                </p>
+                <p>
+                    The recommended configuration uses <strong>read-only API scopes</strong> for everyday operations — browsing groups, querying devices, viewing policies. Write permissions are only needed when the user actively performs create, update, or delete operations, and even then, group ownership often provides sufficient access without requiring write-level app permissions. This encourages organisations to start with the minimum surface area and only expand when a specific workflow demands it.
+                </p>
+
+                <div class="arch-flow">
+                    <div class="arch-box">User Signs In<br><small style="opacity:0.8">via WAM / SSO</small></div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-box">App Scopes<br><small style="opacity:0.8">Read-only by default</small></div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-box">Entra RBAC<br><small style="opacity:0.8">Intersected permissions</small></div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-box">Effective Access<br><small style="opacity:0.8">Least privilege enforced</small></div>
+                </div>
+
+                <h3>Validation Workflow for Write Actions</h3>
+                <p>
+                    All write actions — group creation, member additions, owner assignments, dynamic query updates, renames, and removals — follow a strict validation-before-commit workflow. The tool validates input format, checks for duplicates, resolves object identities against Graph, and presents a structured preview of pending changes. Only after the user explicitly confirms does the operation execute. Failures during execution are caught per-item with detailed error reporting, so a single bad entry never derails an entire bulk operation.
+                </p>
+
+                <div class="callout callout-info">
+                    <p>
+                        <strong>Dynamic Query Safeguard:</strong> Setting a dynamic membership query on an existing group is blocked if the group already has statically assigned members or if the group is already configured as Dynamic. This prevents accidental member loss from a query conversion and avoids conflicting membership rules — a guardrail that the Entra portal itself does not enforce as explicitly.
+                    </p>
+                </div>
+            </section>
+
+            <section id="getting-started">
+                <h2>Getting Started</h2>
+
+                <h3>Quick Start</h3>
+                <ol>
+                    <li><strong>Clone the repository:</strong> <code>git clone https://github.com/satishsinghi-gh/mdm-oda.git</code></li>
+                    <li><strong>Configure credentials (optional):</strong> Pre-populate your Tenant ID and Client ID in the script from your Entra app registration — or enter them manually at launch</li>
+                    <li><strong>Launch the downloaded script:</strong> No parameters, no admin rights needed — prerequisites are handled automatically</li>
+                    <li><strong>Connect and go:</strong> Authenticate with your Entra credentials and start using the tool</li>
+                </ol>
+
+                <h3>Architecture & Flow</h3>
+                <p>
+                    Under the hood, MDM-ODA is a single self-contained PowerShell 7 script with an embedded WPF (XAML) interface. It uses background STA runspaces with ConcurrentQueues and a DispatcherTimer to keep the UI responsive during Graph API calls. Authentication leverages WAM (Web Account Manager) for seamless SSO with your Entra credentials. The Microsoft Graph PowerShell SDK handles all API interactions — from reading group memberships to creating resources — while the WPF DataGrid provides live, sortable, filterable table output with cell-level copy and Excel export. Prerequisite detection and installation (PowerShell 7, Graph modules) is fully automated on first run.
+                </p>
+
+                <div class="arch-flow">
+                    <div class="arch-box">PowerShell Script</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-box">Auto-Prereq Check</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-box">WPF GUI</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-box">Microsoft Graph API</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-box">Entra ID + Intune</div>
+                </div>
+
+                <h3>What's Included</h3>
+                <ul>
+                    <li>Fully functional PowerShell 7 script with embedded WPF UI</li>
+                    <li>Automatic prerequisite detection and installation</li>
+                    <li>Microsoft Graph SDK integration for reliable API calls</li>
+                    <li>Real-time verbose logging to local file system</li>
+                    <li>Validation workflows for write operations</li>
+                    <li>Export to Excel (XLSX) capability</li>
+                    <li>Complete source code and documentation</li>
+                </ul>
+            </section>
+
+            <section id="roadmap">
+                <h2>Roadmap</h2>
+                <p>MDM-ODA is actively evolving. Here's what's planned for upcoming releases:</p>
+
+                <h3>Input-Based Bulk Actions</h3>
+                <p>Excluding destructive actions like Wipe/Delete — focused on safe, repeatable operations:</p>
+                <ul>
+                    <li><strong>Sync</strong> — Trigger device sync across bulk devices on-demand</li>
+                    <li><strong>Remediation</strong> — Execute remediation scripts at scale with targeted input</li>
+                </ul>
+
+                <h3>Comprehensive Update Insights</h3>
+                <p>Deep visibility into the Windows Update landscape across your fleet:</p>
+                <ul>
+                    <li><strong>Quality Updates</strong> — Patch compliance, pending installs, failure tracking</li>
+                    <li><strong>Feature Updates</strong> — Rollout status, eligibility, readiness signals</li>
+                    <li><strong>Driver Updates</strong> — Driver deployment state and version coverage</li>
+                </ul>
+
+                <h3>Application Landscape</h3>
+                <p>End-to-end application lifecycle visibility and management:</p>
+                <ul>
+                    <li><strong>Platforms</strong> — Cross-platform app inventory (Windows, macOS, iOS, Android)</li>
+                    <li><strong>Assignments</strong> — Assignment group mapping and coverage analysis</li>
+                    <li><strong>Deployment States</strong> — Install success/failure rates and trend analysis</li>
+                    <li><strong>Filters</strong> — Assignment filter integration for targeted deployments</li>
+                    <li><strong>App Creation/Modification Workflows</strong> — Streamlined app packaging and configuration</li>
+                </ul>
+
+                <h3>Defender Integration</h3>
+                <p>Bringing Microsoft Defender for Endpoint data into the same operational view:</p>
+                <ul>
+                    <li><strong>Timeline Events</strong> — Device activity timelines for incident investigation</li>
+                    <li><strong>Advanced Hunting</strong> — KQL query integration for threat hunting</li>
+                    <li><strong>Vulnerability State</strong> — CVE exposure and remediation tracking</li>
+                    <li><strong>Software Inventory</strong> — Discovered software with risk scoring</li>
+                </ul>
+
+                <h3>Advanced Policy Management Actions</h3>
+                <p>Extended policy operations beyond read-only insights — targeted modifications, cloning, and bulk assignment management.</p>
+
+                <h3>Advanced Dynamic Group Query Builder</h3>
+                <p>A visual query builder for constructing complex dynamic membership rules with syntax validation, preview, and testing before applying to groups.</p>
+
+                <h3>Log Analytics Integration</h3>
+                <p>Query extended Hardware Inventory and Audit data from Log Analytics that is not available natively through Microsoft Graph — bridging the gap between Intune's built-in reporting and the richer telemetry available in your Log Analytics workspace.</p>
+            </section>
+
+            <div class="tags">
+                <span class="tag">Intune</span>
+                <span class="tag">Entra ID</span>
+                <span class="tag">PowerShell</span>
+                <span class="tag">WPF</span>
+                <span class="tag">Microsoft Graph</span>
+                <span class="tag">Zero Trust</span>
+                <span class="tag">Group Management</span>
+                <span class="tag">Device Management</span>
+                <span class="tag">Policy Assignments</span>
+                <span class="tag">Open Source</span>
+            </div>
+        </div>
+    </article>
+
+    <footer>
+        <div class="container">
+            <p>Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — March 2026</p>
+            <p><a href="https://satishsinghi-gh.github.io/mdm-oda/">Blog Home</a> | <a href="https://github.com/satishsinghi-gh/mdm-oda">GitHub Repository</a></p>
+            <p style="font-size: 0.85rem; color: #9ca3af; margin-top: 1.5rem;">
+                MDM-ODA is an open-source tool built to empower IT professionals with granular control and insights into their Entra ID and Intune deployments. Built with attention to security, usability, and operational excellence.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
