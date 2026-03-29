@@ -610,13 +610,13 @@ $DevConfig = [ordered]@{
     # ---- Feedback URL (opened when Feedback button is clicked) ----
     # Set to the URL of your feedback form, Teams channel, or any web page.
     # Leave empty to hide the Feedback button.
-    FeedbackUrl = ""              # e.g. "https://forms.office.com/yourformid"
+    FeedbackUrl = "https://forms.cloud.microsoft/e/hSqEiYXq2V"              # e.g. "https://forms.office.com/yourformid"
 
     # ---- M365 Group Mail Domain ----
     # Domain suffix shown next to the mail nickname field when creating M365 groups.
     # e.g. "contoso.onmicrosoft.com" or "contoso.com"
     # Leave empty to show only "@" (tenant assigns the domain automatically).
-    M365MailDomain = ""           # e.g. "contoso.onmicrosoft.com"
+    M365MailDomain = "SetYourOrDomain(Line619)"           # e.g. "contoso.onmicrosoft.com"
 }
 
 #endregion DEVELOPER CONFIG
