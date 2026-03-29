@@ -1,4 +1,4 @@
-﻿# MDM On-Demand Actions (MDM-ODA) &#x26A1;
+# MDM On-Demand Actions (MDM-ODA) &#x26A1;
 
 **Live Analytics, Insights & Actions for Entra ID and Intune**
 
@@ -222,7 +222,6 @@ git clone https://github.com/satishsinghi-gh/mdm-oda.git
 | `Device.Read.All` | Resolve devices, read properties, query registered users |
 | `DeviceManagementConfiguration.Read.All` | Read Intune config profiles and policies for assignment lookups |
 | `DeviceManagementManagedDevices.Read.All` | Query managed devices by Azure AD device ID or serial number |
-| `DeviceManagementRBAC.Read.All` | Read Intune RBAC settings (role assignments and role definitions) |
 | `offline_access` | Maintain refresh token for persistent session |
 
 > **Note:** The documented least-privileged permissions for group write operations are `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`. However, based on testing, group owners with scoped Intune RBAC roles can perform all write operations with only the read-only scopes above. If you want to guarantee write access regardless of ownership, add `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`.
