@@ -10,7 +10,7 @@
 
 ---
 
-![MDM-ODA Group Management Blades Overview](images/blades-overview.png)
+![MDM-ODA Group Management Blades Overview](blades-overview.png)
 
 ## Overview
 
@@ -44,63 +44,63 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 <details>
 <summary><strong>Search Entra Objects</strong> — Keyword search across multiple Entra object types from a single page</summary>
 
-![Search Entra Objects](images/search-entra-objects.png)
+![Search Entra Objects](search-entra-objects.png)
 *Search across Users, Groups, Devices, and Service Principals with real-time filtering*
 </details>
 
 <details>
 <summary><strong>List Group Members</strong> — List members from multiple groups with a single click</summary>
 
-![List Group Members](images/list-group-members.png)
+![List Group Members](list-group-members.png)
 *Query members from multiple groups simultaneously with comprehensive details*
 </details>
 
 <details>
 <summary><strong>Object Membership</strong> — Find group membership for bulk items (Users/Devices/Groups)</summary>
 
-![Object Membership](images/object-membership.png)
+![Object Membership](object-membership.png)
 *Bulk lookup of group membership across users, devices, and groups*
 </details>
 
 <details>
 <summary><strong>Find Groups by Owners</strong> — Enter UPNs, get all groups they own</summary>
 
-![Find Groups by Owners](images/find-groups-by-owners.png)
+![Find Groups by Owners](find-groups-by-owners.png)
 *Identify all groups owned by specific users with detailed ownership insights*
 </details>
 
 <details>
 <summary><strong>Create Group</strong> — Create Security/M365 Group with bulk owners, members, or dynamic query from a single page</summary>
 
-![Create Group](images/create-group.png)
+![Create Group](create-group.png)
 *Streamlined group creation with owners, members, and dynamic rules — no CSV, no browser navigation*
 </details>
 
 <details>
 <summary><strong>Set Bulk Owners on Bulk Groups</strong> — Assign multiple owners to multiple groups in one operation</summary>
 
-![Set Bulk Owners](images/set-bulk-owners.png)
+![Set Bulk Owners](set-bulk-owners.png)
 *Bulk owner assignment across multiple groups with validation*
 </details>
 
 <details>
 <summary><strong>Add User Devices to Groups</strong> — Enter UPNs, auto-resolve their registered devices and add to groups</summary>
 
-![Add User Devices to Groups](images/add-user-devices.png)
+![Add User Devices to Groups](add-user-devices.png)
 *Device-to-group assignment driven by user identity*
 </details>
 
 <details>
 <summary><strong>Find Common/Distinct Groups</strong> — Compare group memberships across multiple objects</summary>
 
-![Find Common/Distinct Groups](images/find-common-distinct.png)
+![Find Common/Distinct Groups](find-common-distinct.png)
 *Identify overlapping and unique group memberships for users, devices, or groups*
 </details>
 
 <details>
 <summary><strong>Compare Groups</strong> — Side-by-side comparison of group properties and memberships</summary>
 
-![Compare Groups](images/compare-groups.png)
+![Compare Groups](compare-groups.png)
 *Detailed group comparison with property and membership diff*
 </details>
 
@@ -115,20 +115,20 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 <details>
 <summary><strong>Device Info</strong> — Comprehensive device details from Entra and Intune in one view</summary>
 
-![Device Info](images/device-info.png)
+![Device Info](device-info.png)
 *Hardware, OS, compliance, encryption, and registration details from a single query*
 </details>
 
 <details>
 <summary><strong>Intune Policy Assignments</strong> — View all policies assigned to a device through its group memberships</summary>
 
-![Intune Policy Assignments - Overview](images/policy-assignments-1.png)
+![Intune Policy Assignments - Overview](policy-assignments-1.png)
 *Policy assignment overview with group context*
 
-![Intune Policy Assignments - Details](images/policy-assignments-2.png)
+![Intune Policy Assignments - Details](policy-assignments-2.png)
 *Detailed policy breakdown with assignment intent and filter evaluation*
 
-![Intune Policy Assignments - Expanded](images/policy-assignments-3.png)
+![Intune Policy Assignments - Expanded](policy-assignments-3.png)
 *Full policy assignment landscape across configuration profiles, compliance, and apps*
 </details>
 
@@ -137,27 +137,27 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 <details>
 <summary><strong>Session Notes</strong> — Built-in notepad for each session with timestamp and context</summary>
 
-![Session Notes](images/session-notes.png)
+![Session Notes](session-notes.png)
 *Take notes during operations without leaving the tool*
 </details>
 
 <details>
 <summary><strong>Verbose Logging & Keyword Filter</strong> — Real-time operation logging with search</summary>
 
-![Keyword Filter](images/verbose-logging.png)
+![Keyword Filter](verbose-logging.png)
 *Filter logs by keyword for quick troubleshooting*
 
-![Verbose Logging](images/prereq-handling-2.png)
+![Verbose Logging](prereq-handling-2.png)
 *Detailed operation logs with timestamps*
 </details>
 
 <details>
 <summary><strong>Prerequisite Handling</strong> — Automatic detection and installation of dependencies</summary>
 
-![Prerequisite Check](images/prereq-handling-1.png)
+![Prerequisite Check](prereq-handling-1.png)
 *Automatic detection of system prerequisites*
 
-![Prerequisite Installation](images/prereq-handling-2.png)
+![Prerequisite Installation](prereq-handling-2.png)
 *Installation progress and status reporting*
 </details>
 
