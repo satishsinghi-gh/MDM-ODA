@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -832,6 +832,7 @@
 
                 <h3>Prerequisite Handling</h3>
                 <p>MDM-ODA includes automatic prerequisite detection and installation. The tool proactively checks for missing components and handles setup without manual intervention.</p>
+                <p style="margin-top:0.75rem;">The orchestrator can be launched from a standard <strong>PowerShell 5.1</strong> host. On startup, it detects the running PowerShell version and, if PowerShell 7 is not already active, automatically locates or installs PowerShell 7 via <code>winget</code> — then re-launches itself in the PS7 runtime. This ensures the full WPF interface and Microsoft Graph SDK modules load correctly without any manual intervention from the user.</p>
                 <figure>
                     <img src="prereq-handling-1.png" alt="Prerequisite Check and Installation - Part 1">
                     <figcaption>Automatic detection of system prerequisites</figcaption>
@@ -890,7 +891,7 @@
                         </tr>
                         <tr>
                             <td><code>DeviceManagementRBAC.Read.All</code></td>
-                            <td>Read Intune assignment filters</td>
+                            <td>Read Intune RBAC settings (role assignments and role definitions)</td>
                         </tr>
                         <tr>
                             <td><code>offline_access</code></td>
@@ -1056,6 +1057,10 @@
             </div>
         </div>
     </article>
+
+        <div style="max-width:800px;margin:2rem auto 0;padding:1.25rem 1.5rem;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:0.5rem;">
+        <p style="margin:0;font-size:0.95rem;color:#92400e;"><strong>&#x26A0;&#xFE0F; Disclaimer:</strong> This tool is provided "as-is" without warranty of any kind, express or implied. The author assumes no liability for any damages arising from its use. Always validate operations in a non-production environment before deploying to production tenants.</p>
+    </div>
 
     <footer>
         <div class="container">
