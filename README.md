@@ -6,7 +6,7 @@
 [![PowerShell 7](https://img.shields.io/badge/PowerShell-7.x-blue?logo=powershell&logoColor=white)](https://learn.microsoft.com/en-us/powershell/)
 [![WPF](https://img.shields.io/badge/UI-WPF-blueviolet)](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![Microsoft Graph](https://img.shields.io/badge/API-Microsoft%20Graph-0078D4?logo=microsoft)](https://learn.microsoft.com/en-us/graph/)
-[![Blog](https://img.shields.io/badge/Blog-GitHub%20Pages-green)](https://satishsinghi-gh.github.io/mdm-oda/)
+[![Blog](https://img.shields.io/badge/Blog-GitHub%20Pages-green)](https://satishsinghi-gh.github.io/MDM-ODA/)
 
 ---
 
@@ -16,7 +16,7 @@
 
 MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-demand operations. Built with attention to detail for the granular challenges faced by support teams, enabling project teams to get reliable, meaningful, up-to-date insights and reports on the go. Built with safeguards to prevent accidental actions, keeping Zero Trust and least privilege as top priority.
 
-> For a full deep-dive into the tool's design, architecture, and security model, visit the [MDM-ODA Blog](https://satishsinghi-gh.github.io/mdm-oda/).
+> For a full deep-dive into the tool's design, architecture, and security model, visit the [MDM-ODA Blog](https://satishsinghi-gh.github.io/MDM-ODA/).
 
 ### Project Mission
 
@@ -173,7 +173,7 @@ MDM-ODA uses the OAuth 2.0 delegated flow exclusively — the app never holds st
 
 Every write action follows a strict validation-before-commit workflow: the tool validates input format, checks for duplicates, resolves object identifiers, and presents a structured preview of pending changes. Only after the user explicitly confirms does the operation execute.
 
-> For the full architecture diagram and detailed auth flow, see the [blog](https://satishsinghi-gh.github.io/mdm-oda/).
+> For the full architecture diagram and detailed auth flow, see the [blog](https://satishsinghi-gh.github.io/MDM-ODA/).
 
 ## Prerequisites
 
