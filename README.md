@@ -1,4 +1,4 @@
-# MDM On-Demand Actions (MDM-ODA) &#x26A1;
+﻿# MDM On-Demand Actions (MDM-ODA) &#x26A1;
 
 **Live Analytics, Insights & Actions for Entra ID and Intune**
 
@@ -178,7 +178,7 @@ Every write action follows a strict validation-before-commit workflow: the tool 
 ## Prerequisites
 
 1. **Windows 11** with WPF (built-in, no additional installation needed)
-2. **PowerShell 7** — handled automatically by the script (auto-installs via winget if missing)
+2. **PowerShell 7** — handled automatically by the script (auto-installs via winget if missing). The orchestrator can be launched from a standard PowerShell 5.1 host — it detects the running version, locates or installs PS7, and re-launches itself in the PS7 runtime automatically
 3. **Internet Connectivity** — required for PowerShell Gallery modules and Microsoft Graph API
 4. **No Admin Rights Required** — MDM-ODA runs in user context
 5. **Code Signing & WDAC** — if WDAC or script execution policies are enforced, code signing adjustments may be needed
@@ -222,7 +222,7 @@ git clone https://github.com/satishsinghi-gh/mdm-oda.git
 | `Device.Read.All` | Resolve devices, read properties, query registered users |
 | `DeviceManagementConfiguration.Read.All` | Read Intune config profiles and policies for assignment lookups |
 | `DeviceManagementManagedDevices.Read.All` | Query managed devices by Azure AD device ID or serial number |
-| `DeviceManagementRBAC.Read.All` | Read Intune assignment filters |
+| `DeviceManagementRBAC.Read.All` | Read Intune RBAC settings (role assignments and role definitions) |
 | `offline_access` | Maintain refresh token for persistent session |
 
 > **Note:** The documented least-privileged permissions for group write operations are `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`. However, based on testing, group owners with scoped Intune RBAC roles can perform all write operations with only the read-only scopes above. If you want to guarantee write access regardless of ownership, add `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`.
@@ -256,6 +256,9 @@ MDM-ODA is actively evolving. Here's what's planned for upcoming releases:
 ## Author
 
 **Satish Singhi**
+
+> [!WARNING]
+> **Disclaimer:** This tool is provided "as-is" without warranty of any kind, express or implied. The author assumes no liability for any damages arising from its use. Always validate operations in a non-production environment before deploying to production tenants.
 
 ## License
 
