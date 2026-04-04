@@ -563,7 +563,7 @@
 <body>
     <nav>
         <div class="container">
-            <div class="logo">MDM-ODA</div><span style="color:#5DC98B;font-size:0.75rem;font-weight:500;margin-left:0.5rem;">v0.66</span>
+            <div class="logo">MDM-ODA</div><span style="color:#5DC98B;font-size:0.75rem;font-weight:500;margin-left:0.5rem;">v0.7</span>
         </div>
     </nav>
 
@@ -571,9 +571,9 @@
         <div class="container">
             <div class="hero-badge">Intune & Entra ID Automation</div>
             <h1>MDM On-Demand Actions <span style="color:#FFD700;font-size:0.85em;">&#x26A1;</span></h1>
-            <p>Live Analytics, Insights & Actions</p><p style="font-size:0.9rem;opacity:0.85;margin-top:0.5rem;">Version 0.66</p>
+            <p>Live Analytics, Insights & Actions</p><p style="font-size:0.9rem;opacity:0.85;margin-top:0.5rem;">Version 0.7</p>
             <div class="hero-meta">
-                Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — March 2026 |
+                Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — April 2026 |
                 <a href="https://github.com/satishsinghi-gh/mdm-oda">GitHub Repository</a>
             </div>
         </div>
@@ -594,6 +594,7 @@
                     <li><a href="#safeguards">Safety, Validation & Auth Design</a></li>
                     <li><a href="#getting-started">Getting Started</a></li>
                     <li><a href="#roadmap">Roadmap</a></li>
+                    <li><a href="#changelog">Changelog — V0.7</a></li>
                 </ol>
             </div>
 
@@ -648,7 +649,7 @@
                 </figure>
 
                 <h3>Search Entra Objects</h3>
-                <p>Keyword search across multiple Entra object types from a single page. Filter by object type using keywords.</p>
+                <p>Search across multiple Entra object types from a single page. Accepts bulk input — UPN, Device Name, Device ID, Group Name, or Group ID — one per line. Supports multiple search terms simultaneously with results deduplicated across all types. Filter by Users, Devices, Security Groups, and M365 Groups. Optionally resolve managers for User objects.</p>
                 <figure>
                     <img src="search-entra-objects.png" alt="Search Entra Objects interface">
                     <figcaption>Search across Users, Groups, Devices, and Service Principals with real-time filtering</figcaption>
@@ -669,7 +670,7 @@
                 </figure>
 
                 <h3>Find Groups by Owners</h3>
-                <p>Enter UPNs, get all groups they own with Group Type, Membership Type, and Member Count.</p>
+                <p>Enter UPNs to find all groups they own with Group Type, Membership Type, and Member Count. Leave the input empty to discover all groups without an owner — a powerful audit tool for identifying orphaned groups in your tenant.</p>
                 <figure>
                     <img src="find-groups-by-owners.png" alt="Find Groups by Owners interface">
                     <figcaption>Identify all groups owned by specific users with detailed ownership insights</figcaption>
@@ -728,8 +729,8 @@
                     <figcaption>Unified device information from Entra ID and Intune with extensive field coverage</figcaption>
                 </figure>
 
-                <h3>Intune Policy Assignments</h3>
-                <p>Runtime or project decisions, get instant insights about Intune policies, Assignment Groups, Assignment Filters and associated Filter Types. Generate output filtered by keywords, Policy Type, Sub-Type, OS platform.</p>
+                <h3>Get Policy Info (formerly Intune Policy Assignments)</h3>
+                <p>Runtime or project decisions, get instant insights about Intune policies, Assignment Groups, Assignment Filters and associated Filter Types. Generate output filtered by keywords, Policy Type, Sub-Type, and OS platform. Now includes Compliance Policy assignments, classic Autopilot Profile reports, Autopilot Device Preparation assignment reports, and ESP assignment reports with priority visibility.</p>
                 <figure>
                     <img src="policy-assignments-1.png" alt="Intune Policy Assignments interface - Part 1">
                     <figcaption>Browse all Intune policies with assignment group visibility</figcaption>
@@ -742,6 +743,17 @@
                     <img src="policy-assignments-3.png" alt="Intune Policy Assignments interface - Part 3">
                     <figcaption>View assignment filters and their associated filter types</figcaption>
                 </figure>
+
+                <h3>Get App Info <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.7</span></h3>
+                <p>
+                    A major enhancement for application visibility. Get instant app insights to know what apps were (or were not) deployed via Intune. Query Discovered Apps, Managed Apps, or both simultaneously across your fleet.
+                </p>
+                <ul>
+                    <li><strong>Discovered & Managed Apps</strong> — See what is actually installed on devices versus what Intune deployed</li>
+                    <li><strong>Managed App Assignments</strong> — Full assignment details including groups, filters, and filter modes</li>
+                    <li><strong>Flexible Filtering</strong> — Filter by Platform, Ownership, and App Keywords</li>
+                    <li><strong>Multiple Input Types</strong> — Input Devices, Users (devices resolved based on filters), or Groups (resolves nested groups for Users/Devices)</li>
+                </ul>
             </section>
 
             <section id="productivity">
@@ -890,6 +902,10 @@
                             <td>Query managed devices by Azure AD device ID or serial number</td>
                         </tr>
                         <tr>
+                            <td><code>DeviceManagementApps.Read.All</code></td>
+                            <td>Read Intune managed and discovered apps, app assignments, and app configurations</td>
+                        </tr>
+                        <tr>
                             <td><code>offline_access</code></td>
                             <td>Maintain refresh token for persistent session</td>
                         </tr>
@@ -991,6 +1007,46 @@
                 </ul>
             </section>
 
+            <section id="changelog">
+                <h2>Changelog — V0.7</h2>
+
+                <h3>New Features</h3>
+
+                <h4>Get App Info <span style="display:inline-block;background:#10b981;color:white;font-size:0.7em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:6px;">Major Enhancement</span></h4>
+                <ul>
+                    <li>Get Discovered or Managed (or both) apps — instant app insights to know what apps were (or were not) deployed via Intune</li>
+                    <li>Managed App Assignment details including filters and filter modes</li>
+                    <li>Ability to filter based on Platform, Ownership, and Keywords</li>
+                    <li>Input Devices or Users (devices resolved based on filters) or Groups (resolves nested groups for Users/Devices)</li>
+                </ul>
+
+                <h4>Search Entra Objects</h4>
+                <ul>
+                    <li>Now capable of handling multiple objects of multiple types simultaneously with deduplication</li>
+                    <li>Get Manager checkbox — adds Manager UPN column for User objects</li>
+                </ul>
+
+                <h4>Find Groups by Owners</h4>
+                <ul>
+                    <li>Will now show all groups without an owner when searched without an input UPN — powerful audit capability for orphaned groups</li>
+                </ul>
+
+                <h4>Get Policy Info (formerly "Get Policy Assignments")</h4>
+                <ul>
+                    <li>Renamed from "Get Policy Assignments" to "Get Policy Info"</li>
+                    <li>Compliance Policy assignments including filters and filter modes</li>
+                    <li>Classic Autopilot Profile assignment report with Description and Deployment Mode columns</li>
+                    <li>Autopilot Device Preparation assignment report</li>
+                    <li>ESP assignment report including priority column</li>
+                </ul>
+
+                <h3>Improvements</h3>
+                <ul>
+                    <li>Horizontal scroll bar added to all output tables across all blades</li>
+                    <li>Resizable columns on all output DataGrids for better data visibility</li>
+                </ul>
+            </section>
+
             <section id="roadmap">
                 <h2>Roadmap</h2>
                 <p>MDM-ODA is actively evolving. Here's what's planned for upcoming releases:</p>
@@ -1008,16 +1064,6 @@
                     <li><strong>Quality Updates</strong> — Patch compliance, pending installs, failure tracking</li>
                     <li><strong>Feature Updates</strong> — Rollout status, eligibility, readiness signals</li>
                     <li><strong>Driver Updates</strong> — Driver deployment state and version coverage</li>
-                </ul>
-
-                <h3>Application Landscape</h3>
-                <p>End-to-end application lifecycle visibility and management:</p>
-                <ul>
-                    <li><strong>Platforms</strong> — Cross-platform app inventory (Windows, macOS, iOS, Android)</li>
-                    <li><strong>Assignments</strong> — Assignment group mapping and coverage analysis</li>
-                    <li><strong>Deployment States</strong> — Install success/failure rates and trend analysis</li>
-                    <li><strong>Filters</strong> — Assignment filter integration for targeted deployments</li>
-                    <li><strong>App Creation/Modification Workflows</strong> — Streamlined app packaging and configuration</li>
                 </ul>
 
                 <h3>Defender Integration</h3>
@@ -1060,7 +1106,7 @@
 
     <footer>
         <div class="container">
-            <p>Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — March 2026</p>
+            <p>Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — April 2026</p>
             <p><a href="https://satishsinghi-gh.github.io/MDM-ODA/">Blog Home</a> | <a href="https://github.com/satishsinghi-gh/mdm-oda">GitHub Repository</a></p>
             <p style="font-size: 0.85rem; color: #9ca3af; margin-top: 1.5rem;">
                 MDM-ODA is an open-source tool built to empower IT professionals with granular control and insights into their Entra ID and Intune deployments. Built with attention to security, usability, and operational excellence.
