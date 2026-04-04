@@ -2,7 +2,7 @@
 
 **Live Analytics, Insights & Actions for Entra ID and Intune**
 
-[![Version](https://img.shields.io/badge/Version-0.66-green)](https://github.com/satishsinghi-gh/mdm-oda/releases)
+[![Version](https://img.shields.io/badge/Version-0.7-green)](https://github.com/satishsinghi-gh/mdm-oda/releases)
 [![PowerShell 7](https://img.shields.io/badge/PowerShell-7.x-blue?logo=powershell&logoColor=white)](https://learn.microsoft.com/en-us/powershell/)
 [![WPF](https://img.shields.io/badge/UI-WPF-blueviolet)](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![Microsoft Graph](https://img.shields.io/badge/API-Microsoft%20Graph-0078D4?logo=microsoft)](https://learn.microsoft.com/en-us/graph/)
@@ -42,7 +42,7 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 ## Features — Group Management
 
 <details>
-<summary><strong>Search Entra Objects</strong> — Keyword search across multiple Entra object types from a single page</summary>
+<summary><strong>Search Entra Objects</strong> — Bulk multi-type search across Entra objects with manager lookup</summary>
 
 ![Search Entra Objects](search-entra-objects.png)
 *Search across Users, Groups, Devices, and Service Principals with real-time filtering*
@@ -63,7 +63,7 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 </details>
 
 <details>
-<summary><strong>Find Groups by Owners</strong> — Enter UPNs, get all groups they own</summary>
+<summary><strong>Find Groups by Owners</strong> — Enter UPNs to find owned groups, or leave empty to find groups without owners</summary>
 
 ![Find Groups by Owners](find-groups-by-owners.png)
 *Identify all groups owned by specific users with detailed ownership insights*
@@ -120,7 +120,7 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 </details>
 
 <details>
-<summary><strong>Intune Policy Assignments</strong> — View all policies assigned to a device through its group memberships</summary>
+<summary><strong>Get Policy Info</strong> — Comprehensive policy assignment report including Compliance, Autopilot, Device Prep, and ESP</summary>
 
 ![Intune Policy Assignments - Overview](policy-assignments-1.png)
 *Policy assignment overview with group context*
@@ -130,6 +130,12 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 
 ![Intune Policy Assignments - Expanded](policy-assignments-3.png)
 *Full policy assignment landscape across configuration profiles, compliance, and apps*
+</details>
+
+<details>
+<summary><strong>Get App Info</strong> — Discovered and managed app insights with assignment details (NEW in V0.7)</summary>
+
+*Query Discovered Apps, Managed Apps, or both simultaneously. View managed app assignment details including groups, filters, and filter modes. Input Devices, Users (devices resolved based on filters), or Groups (resolves nested groups). Filter by Platform, Ownership, and Keywords.*
 </details>
 
 ## Productivity Features
@@ -222,6 +228,7 @@ git clone https://github.com/satishsinghi-gh/mdm-oda.git
 | `Device.Read.All` | Resolve devices, read properties, query registered users |
 | `DeviceManagementConfiguration.Read.All` | Read Intune config profiles and policies for assignment lookups |
 | `DeviceManagementManagedDevices.Read.All` | Query managed devices by Azure AD device ID or serial number |
+| `DeviceManagementApps.Read.All` | Read Intune managed and discovered apps, app assignments, and configurations |
 | `offline_access` | Maintain refresh token for persistent session |
 
 > **Note:** The documented least-privileged permissions for group write operations are `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`. However, based on testing, group owners with scoped Intune RBAC roles can perform all write operations with only the read-only scopes above. If you want to guarantee write access regardless of ownership, add `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`.
@@ -240,13 +247,41 @@ ms-appx-web://Microsoft.AAD.BrokerPlugin/{Client-ID}
 
 Replace `{Client-ID}` with your actual Application (client) ID from Entra.
 
+## Changelog — V0.7
+
+### New Features
+
+**Get App Info** (Major Enhancement)
+- Get Discovered or Managed (or both) apps — instant app insights to know what apps were (or were not) deployed via Intune
+- Managed App Assignment details including filters and filter modes
+- Ability to filter based on Platform, Ownership, and Keywords
+- Input Devices or Users (devices resolved based on filters) or Groups (resolves nested groups for Users/Devices)
+
+**Search Entra Objects**
+- Now capable of handling multiple objects of multiple types simultaneously with deduplication
+- Get Manager checkbox — adds Manager UPN column for User objects
+
+**Find Groups by Owners**
+- Will now show all groups without an owner when searched without an input UPN
+
+**Get Policy Info** (formerly "Get Policy Assignments")
+- Renamed from "Get Policy Assignments" to "Get Policy Info"
+- Compliance Policy assignments including filters and filter modes
+- Classic Autopilot Profile assignment report with Description and Deployment Mode columns
+- Autopilot Device Preparation assignment report
+- ESP assignment report including priority column
+
+### Improvements
+
+- Horizontal scroll bar added to all output tables across all blades
+- Resizable columns on all output DataGrids for better data visibility
+
 ## Roadmap
 
 MDM-ODA is actively evolving. Here's what's planned for upcoming releases:
 
 - **Input-Based Bulk Actions** — Sync, Remediation (excluding destructive actions like Wipe/Delete)
 - **Comprehensive Update Insights** — Quality Updates, Feature Updates, Driver Updates
-- **Application Landscape** — Platforms, Assignments, Deployment States, Filters, App Creation Workflows
 - **Defender Integration** — Timeline Events, Advanced Hunting, Vulnerability State, Software Inventory
 - **Advanced Policy Management Actions** — Targeted modifications, cloning, bulk assignment management
 - **Advanced Dynamic Group Query Builder** — Visual query builder with syntax validation and preview
