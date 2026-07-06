@@ -2,7 +2,7 @@
 
 **Live Analytics, Insights & Actions for Entra ID and Intune**
 
-[![Version](https://img.shields.io/badge/Version-0.7-green)](https://github.com/satishsinghi-gh/mdm-oda/releases)
+[![Version](https://img.shields.io/badge/Version-0.8-green)](https://github.com/satishsinghi-gh/mdm-oda/releases)
 [![PowerShell 7](https://img.shields.io/badge/PowerShell-7.x-blue?logo=powershell&logoColor=white)](https://learn.microsoft.com/en-us/powershell/)
 [![WPF](https://img.shields.io/badge/UI-WPF-blueviolet)](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![Microsoft Graph](https://img.shields.io/badge/API-Microsoft%20Graph-0078D4?logo=microsoft)](https://learn.microsoft.com/en-us/graph/)
@@ -106,6 +106,8 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 
 ### Additional Group Management
 
+- **User Direct Reports** — Enter UPNs or Object IDs to list each user's direct reports
+- **Get Group Owner** — Bulk lookup of group ownership
 - **Rename Bulk Groups** — Rename multiple groups at once
 - **Update Dynamic Membership Rules** — Modify dynamic queries on existing groups
 - **Delete Empty Groups** — Safely remove groups with zero members (with confirmation)
@@ -133,9 +135,58 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 </details>
 
 <details>
-<summary><strong>Get App Info</strong> — Discovered and managed app insights with assignment details (NEW in V0.7)</summary>
+<summary><strong>Get App Info</strong> — Discovered and managed app insights with assignment details</summary>
 
+![Get App Info](get-app-info.png)
 *Query Discovered Apps, Managed Apps, or both simultaneously. View managed app assignment details including groups, filters, and filter modes. Input Devices, Users (devices resolved based on filters), or Groups (resolves nested groups). Filter by Platform, Ownership, and Keywords.*
+</details>
+
+<details>
+<summary><strong>Missing BitLocker Keys</strong> — Audit Windows devices missing an OS drive recovery key in Entra (NEW in V0.8)</summary>
+
+![Missing BitLocker Keys](missing-bitlocker-keys.png)
+*Identifies Windows devices that have no OS drive BitLocker recovery key backed up to Entra ID — a critical escrow-compliance audit. A second mode reports devices whose newest key is older than N days (0–60). Filter by Ownership, Intune enrollment state, and exclusions. Output carries the same rich 30+ column user/device detail as Get Device Info. The tool only reads key metadata — it never retrieves or exposes actual recovery keys.*
+</details>
+
+<details>
+<summary><strong>Policy Export</strong> — Export policies + underlying settings to portable JSON (NEW in V0.8)</summary>
+
+![Policy Export](policy-export.png)
+*Export Intune policies with their full underlying settings (no assignments) to portable JSON files. Covers Device Configurations, Settings Catalog & Endpoint Security (incl. Firewall), Administrative Templates (incl. bundling of custom/ingested ADMX+ADML files), PowerShell Scripts, Detection/Remediation Scripts, classic Autopilot Deployment Profiles, and Enrollment Status Pages. Export Selected (filtered by comma-separated keywords, Type, Sub-Type, Platform) or Export All. Files are always saved locally; Blob options additionally upload to an Azure Storage container via a SAS URL you provide.*
+</details>
+
+<details>
+<summary><strong>Policy Import</strong> — Recreate policies from JSON exports with preview & duplicate detection (NEW in V0.8)</summary>
+
+![Policy Import](policy-import.png)
+*Recreate policies from JSON export files (local folder or Azure Blob) into the signed-in tenant — ideal for tenant-to-tenant migration, lab seeding, and configuration backup/restore. Every import previews the planned changes first, then creates each policy as a NEW object with an "(Imported)" suffix — existing policies are never modified and assignments are never imported. Content-based duplicate detection flags policies already present in the target (compared by settings, not name) with Proceed / Skip Duplicates options. Cross-tenant dependencies (reusable settings, custom ADMX definitions) are detected and reported with actionable skip reasons, and custom ADMX administrative templates are automatically ingested and remapped in the target tenant.*
+</details>
+
+<details>
+<summary><strong>Duplicate Policy Review</strong> — Find policies with identical settings content (NEW in V0.8)</summary>
+
+![Duplicate Policy Review](duplicate-policy-review.png)
+*Scans all policy types and groups policies whose underlying settings are identical — compared by content, not by name. Surfaces Policy Name, Platform, Policy Type, Last Modified, and Assignment Groups so you can consolidate redundant policies with confidence. Keyword and platform filters narrow the scan.*
+</details>
+
+<details>
+<summary><strong>Policy Cleanup</strong> — Backup & delete policies by name with a mandatory safety net (NEW in V0.8)</summary>
+
+![Policy Cleanup](policy-cleanup.png)
+*Paste policy names (one per line), resolve them against the tenant, then back up and permanently delete. A backup target (local folder or Azure Blob via SAS URL) is REQUIRED — the backup JSON captures each policy's full settings plus its assignment groups and filters. If any backup fails, nothing is deleted. Resolve → Preview → Explicit Confirmation → Delete.*
+</details>
+
+<details>
+<summary><strong>Run Remediation</strong> — On-demand remediation scripts against listed devices (NEW in V0.8)</summary>
+
+![Run Remediation](run-remediation.png)
+*Run a detection/remediation script on-demand against the devices you list — same action as the Intune console's "Run remediation", but in bulk. Pick a script from the pre-loaded dropdown with type-ahead keyword filtering. Input UPNs, Device Names, Entra Device IDs, Intune Device IDs, Serial Numbers, or Groups (user inputs resolve to their devices). For safety this operation targets COMPANY-owned WINDOWS devices only — personal or non-Windows devices are resolved but automatically skipped and shown in the confirmation summary. A full validation workflow shows the script and resolved devices with Proceed/Cancel before anything runs.*
+</details>
+
+<details>
+<summary><strong>Bulk Sync</strong> — Send Intune sync to devices at scale (NEW in V0.8)</summary>
+
+*Trigger an Intune device sync across bulk devices — all platforms, corporate and personal, with an optional platform filter. Same flexible input types as Run Remediation and the same validation workflow before the sync fires.*
 </details>
 
 ## Productivity Features
@@ -177,7 +228,7 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 
 MDM-ODA uses the OAuth 2.0 delegated flow exclusively — the app never holds standalone permissions. Every API call executes in the context of the signed-in user, meaning the effective permission is always the intersection of what the app registration allows and what the user's Entra/Intune roles permit. The recommended configuration uses **read-only API scopes** for everyday operations. Write permissions are only needed when performing create, update, or delete operations.
 
-Every write action follows a strict validation-before-commit workflow: the tool validates input format, checks for duplicates, resolves object identifiers, and presents a structured preview of pending changes. Only after the user explicitly confirms does the operation execute.
+Every write action follows a strict validation-before-commit workflow: the tool validates input format, checks for duplicates, resolves object identifiers, and presents a structured preview of pending changes. Only after the user explicitly confirms does the operation execute. Destructive operations carry additional guardrails — Policy Cleanup refuses to delete anything unless a verified backup succeeds first, and Run Remediation is hard-scoped to corporate-owned Windows devices.
 
 > For the full architecture diagram and detailed auth flow, see the [blog](https://satishsinghi-gh.github.io/MDM-ODA/).
 
@@ -216,7 +267,7 @@ git clone https://github.com/satishsinghi-gh/mdm-oda.git
 
 ## Permissions
 
-### Delegated App Permissions
+### Delegated App Permissions — Core (read-only)
 
 | Permission | Purpose |
 |---|---|
@@ -226,16 +277,27 @@ git clone https://github.com/satishsinghi-gh/mdm-oda.git
 | `GroupMember.Read.All` | List group members and query member counts |
 | `Directory.Read.All` | TransitiveMemberOf for PIM role detection and object membership |
 | `Device.Read.All` | Resolve devices, read properties, query registered users |
-| `DeviceManagementConfiguration.Read.All` | Read Intune config profiles and policies for assignment lookups |
+| `DeviceManagementConfiguration.Read.All` | Read Intune config profiles, policies, and scripts for assignment lookups and Policy Export |
 | `DeviceManagementManagedDevices.Read.All` | Query managed devices by Azure AD device ID or serial number |
 | `DeviceManagementApps.Read.All` | Read Intune managed and discovered apps, app assignments, and configurations |
+| `BitlockerKey.ReadBasic.All` | Enumerate BitLocker recovery key metadata for the Missing BitLocker Keys audit — key material is never read (use `BitlockerKey.Read.All` only if your tenant policy requires it) |
 | `offline_access` | Maintain refresh token for persistent session |
+
+### Delegated App Permissions — Feature-based (write)
+
+Only needed if you use the corresponding operation:
+
+| Permission | Required by |
+|---|---|
+| `DeviceManagementConfiguration.ReadWrite.All` | Policy Import (create policies/scripts), Policy Cleanup (delete policies) |
+| `DeviceManagementServiceConfig.ReadWrite.All` | Policy Import of classic Autopilot Deployment Profiles and Enrollment Status Pages |
+| `DeviceManagementManagedDevices.PrivilegedOperations.All` | Run Remediation (on-demand remediation) and Bulk Sync (device sync remote actions) |
 
 > **Note:** The documented least-privileged permissions for group write operations are `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`. However, based on testing, group owners with scoped Intune RBAC roles can perform all write operations with only the read-only scopes above. If you want to guarantee write access regardless of ownership, add `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`.
 
 ### User Permissions
 
-Entra built-in roles or custom RBAC roles determine which specific resources a user can access. The app permissions set the API surface ceiling, but Intune RBAC and group ownership scope the actual access. **Group Owners** is sufficient for most group management operations. For comprehensive device and policy insights, users may benefit from **Intune Reader** or **Intune Administrator** roles depending on scope.
+Entra built-in roles or custom RBAC roles determine which specific resources a user can access. The app permissions set the API surface ceiling, but Intune RBAC and group ownership scope the actual access. **Group Owners** is sufficient for most group management operations. For comprehensive device and policy insights, users may benefit from **Intune Reader** or **Intune Administrator** roles depending on scope. Policy Import/Cleanup, Run Remediation, and Bulk Sync additionally require an Intune role that permits the corresponding write/remote actions.
 
 ### Web Application Redirect URI
 
@@ -247,43 +309,70 @@ ms-appx-web://Microsoft.AAD.BrokerPlugin/{Client-ID}
 
 Replace `{Client-ID}` with your actual Application (client) ID from Entra.
 
-## Changelog — V0.7
+## Changelog — V0.8
 
 ### New Features
 
-**Get App Info** (Major Enhancement)
-- Get Discovered or Managed (or both) apps — instant app insights to know what apps were (or were not) deployed via Intune
-- Managed App Assignment details including filters and filter modes
-- Ability to filter based on Platform, Ownership, and Keywords
-- Input Devices or Users (devices resolved based on filters) or Groups (resolves nested groups for Users/Devices)
+**Policy Export & Policy Import**
+- Export policies + full underlying settings to portable JSON across 7 policy types — Device Configurations, Settings Catalog & Endpoint Security, Administrative Templates, PowerShell Scripts, Detection/Remediation Scripts, Autopilot Deployment Profiles, Enrollment Status Pages
+- Local folder always; optional Azure Blob container upload/import via SAS URL
+- Import preview with planned changes; policies created as NEW objects with "(Imported)" suffix — existing policies never touched, assignments never imported
+- Content-based duplicate detection (settings hash, not name) with Proceed / Skip Duplicates workflow
+- Custom/ingested ADMX administrative templates: ADMX+ADML bundled on export, automatically ingested and definition-remapped on import
+- Cross-tenant dependency detection with actionable Skipped reasons (reusable settings groups, missing custom ADMX)
+- Multi-keyword comma-separated filtering honored across Local and Blob operations
 
-**Search Entra Objects**
-- Now capable of handling multiple objects of multiple types simultaneously with deduplication
-- Get Manager checkbox — adds Manager UPN column for User objects
+**Duplicate Policy Review**
+- Content-based duplicate detection across all policy types — finds policies whose settings are identical even when names differ
+- Output includes Assignment Groups and Last Modified for consolidation decisions
 
-**Find Groups by Owners**
-- Will now show all groups without an owner when searched without an input UPN
+**Policy Cleanup**
+- Backup-and-delete workflow: Resolve → Preview → Explicit Confirm → Delete
+- Backup to local folder or Azure Blob is mandatory and captures settings + assignment groups + filters per policy; delete does not proceed if any backup fails
 
-**Get Policy Info** (formerly "Get Policy Assignments")
-- Renamed from "Get Policy Assignments" to "Get Policy Info"
-- Compliance Policy assignments including filters and filter modes
-- Classic Autopilot Profile assignment report with Description and Deployment Mode columns
-- Autopilot Device Preparation assignment report
-- ESP assignment report including priority column
+**Run Remediation**
+- On-demand detection/remediation script execution against listed devices — console-parity remote action, results in seconds
+- Script dropdown with type-ahead keyword filter; inputs: UPN / Device Name / Entra Device ID / Intune Device ID / Serial Number / Groups
+- Safeguard: corporate-owned Windows devices only — everything else auto-skipped and disclosed in the confirmation summary
+
+**Bulk Sync**
+- Bulk Intune device sync across all platforms and ownership types with platform filter and validation workflow
+
+**Missing BitLocker Keys**
+- Audit Windows devices missing an OS drive BitLocker recovery key in Entra
+- "Key older than N days" mode (0–60) for escrow-freshness auditing
+- Ownership, exclusion, and Intune enrollment filters; full Get Device Info column set
+- Reads key metadata only — never retrieves recovery key material
 
 ### Improvements
 
-- Horizontal scroll bar added to all output tables across all blades
-- Resizable columns on all output DataGrids for better data visibility
+- Get Device Info: tenant-wide device pre-fetch eliminates per-device Graph round-trips for large queries
+- Verbose logging: buffered writer with quiet mode for high-volume operations
+- Real HTTP status capture and failure diagnostics dumps for import troubleshooting
+- Graceful Stop across all long-running operations
+
+<details>
+<summary><strong>Previous Changelog — V0.7</strong></summary>
+
+**Get App Info** (Major Enhancement) — Discovered/Managed apps, assignment details with filters and filter modes, Platform/Ownership/Keyword filters, Device/User/Group inputs.
+
+**Search Entra Objects** — bulk multi-type input with deduplication; Get Manager checkbox.
+
+**Find Groups by Owners** — empty input returns all groups without an owner.
+
+**Get Policy Info** (renamed from "Get Policy Assignments") — Compliance Policy assignments, classic Autopilot Profile report, Autopilot Device Preparation report, ESP report with priority.
+
+**Improvements** — horizontal scroll bars and resizable columns on all output tables.
+</details>
 
 ## Roadmap
 
 MDM-ODA is actively evolving. Here's what's planned for upcoming releases:
 
-- **Input-Based Bulk Actions** — Sync, Remediation (excluding destructive actions like Wipe/Delete)
 - **Comprehensive Update Insights** — Quality Updates, Feature Updates, Driver Updates
 - **Defender Integration** — Timeline Events, Advanced Hunting, Vulnerability State, Software Inventory
 - **Advanced Policy Management Actions** — Targeted modifications, cloning, bulk assignment management
+- **Reusable Settings Dependencies** — Import support for reusable settings groups referenced by Settings Catalog policies
 - **Advanced Dynamic Group Query Builder** — Visual query builder with syntax validation and preview
 - **Log Analytics Integration** — Extended Hardware Inventory and Audit data from Log Analytics
 
