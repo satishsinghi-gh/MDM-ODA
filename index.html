@@ -563,7 +563,7 @@
 <body>
     <nav>
         <div class="container">
-            <div class="logo">MDM-ODA</div><span style="color:#5DC98B;font-size:0.75rem;font-weight:500;margin-left:0.5rem;">v0.7</span>
+            <div class="logo">MDM-ODA</div><span style="color:#5DC98B;font-size:0.75rem;font-weight:500;margin-left:0.5rem;">v0.8</span>
         </div>
     </nav>
 
@@ -571,9 +571,9 @@
         <div class="container">
             <div class="hero-badge">Intune & Entra ID Automation</div>
             <h1>MDM On-Demand Actions <span style="color:#FFD700;font-size:0.85em;">&#x26A1;</span></h1>
-            <p>Live Analytics, Insights & Actions</p><p style="font-size:0.9rem;opacity:0.85;margin-top:0.5rem;">Version 0.7</p>
+            <p>Live Analytics, Insights & Actions</p><p style="font-size:0.9rem;opacity:0.85;margin-top:0.5rem;">Version 0.8</p>
             <div class="hero-meta">
-                Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — April 2026 |
+                Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — July 2026 |
                 <a href="https://github.com/satishsinghi-gh/mdm-oda">GitHub Repository</a>
             </div>
         </div>
@@ -594,7 +594,7 @@
                     <li><a href="#safeguards">Safety, Validation & Auth Design</a></li>
                     <li><a href="#getting-started">Getting Started</a></li>
                     <li><a href="#roadmap">Roadmap</a></li>
-                    <li><a href="#changelog">Changelog — V0.7</a></li>
+                    <li><a href="#changelog">Changelog — V0.8</a></li>
                 </ol>
             </div>
 
@@ -744,7 +744,7 @@
                     <figcaption>View assignment filters and their associated filter types</figcaption>
                 </figure>
 
-                <h3>Get App Info <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.7</span></h3>
+                <h3>Get App Info</h3>
                 <p>
                     A major enhancement for application visibility. Get instant app insights to know what apps were (or were not) deployed via Intune. Query Discovered Apps, Managed Apps, or both simultaneously across your fleet.
                 </p>
@@ -753,7 +753,65 @@
                     <li><strong>Managed App Assignments</strong> — Full assignment details including groups, filters, and filter modes</li>
                     <li><strong>Flexible Filtering</strong> — Filter by Platform, Ownership, and App Keywords</li>
                     <li><strong>Multiple Input Types</strong> — Input Devices, Users (devices resolved based on filters), or Groups (resolves nested groups for Users/Devices)</li>
-                </ul>
+
+                <h3>Missing BitLocker Keys <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.8</span></h3>
+                <p>
+                    A critical escrow-compliance audit: identifies Windows devices that have no OS drive BitLocker recovery key backed up to Entra ID. A second mode reports devices whose newest recovery key is older than N days (0&ndash;60) &mdash; useful for validating key rotation. Filter by Ownership, Intune enrollment state, and exclusions. Output carries the same rich 30+ column user/device detail as Get Device Info, so every flagged device comes with full context for follow-up. The tool only reads key <em>metadata</em> &mdash; it never retrieves or exposes actual recovery keys.
+                </p>
+                <figure>
+                    <img src="missing-bitlocker-keys.png" alt="Missing BitLocker Keys interface">
+                    <figcaption>Audit devices missing an OS drive recovery key without ever touching key material</figcaption>
+                </figure>
+
+                <h3>Policy Export <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.8</span></h3>
+                <p>
+                    Export Intune policies with their full underlying settings (no assignments) to portable JSON files. Covers seven policy families: Device Configurations, Settings Catalog &amp; Endpoint Security (including Firewall), Administrative Templates (including bundling of custom/ingested ADMX+ADML definition files), PowerShell Scripts, Detection/Remediation Scripts, classic Autopilot Deployment Profiles, and Enrollment Status Pages. Use filters (comma-separated keywords, Type, Sub-Type, OS Platform) with Export Selected, or capture the whole tenant with Export All. Files are always saved locally; the Blob options additionally upload to an Azure Storage container via a SAS URL you provide.
+                </p>
+                <figure>
+                    <img src="policy-export.png" alt="Policy Export interface">
+                    <figcaption>Export policies and their settings to portable JSON &mdash; locally or to Azure Blob</figcaption>
+                </figure>
+
+                <h3>Policy Import <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.8</span></h3>
+                <p>
+                    Recreate policies from JSON export files (local folder or Azure Blob) into the signed-in tenant &mdash; ideal for tenant-to-tenant migration, lab seeding, and configuration backup/restore. Every import previews the planned changes first, then creates each policy as a <strong>new</strong> object with an "(Imported)" suffix &mdash; existing policies are never modified and assignments are never imported. Content-based duplicate detection flags policies already present in the target (compared by settings content, not name) and offers Proceed / Skip Duplicates. Cross-tenant dependencies (reusable settings groups, custom ADMX definitions) are detected and reported with actionable skip reasons, and custom ADMX administrative templates are automatically ingested and remapped in the target tenant.
+                </p>
+                <figure>
+                    <img src="policy-import.png" alt="Policy Import interface">
+                    <figcaption>Preview-first policy import with content-based duplicate detection</figcaption>
+                </figure>
+
+                <h3>Duplicate Policy Review <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.8</span></h3>
+                <p>
+                    Policy sprawl is real. This operation scans all policy types and groups policies whose underlying settings are identical &mdash; compared by content, not by name &mdash; so renamed copies and drifted clones can't hide. Results show Policy Name, Platform, Policy Type, Last Modified, and Assignment Groups, giving you everything needed to consolidate redundant policies with confidence. Keyword and platform filters narrow the scan.
+                </p>
+                <figure>
+                    <img src="duplicate-policy-review.png" alt="Duplicate Policy Review interface">
+                    <figcaption>Find policies with byte-for-byte identical settings regardless of their names</figcaption>
+                </figure>
+
+                <h3>Policy Cleanup <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.8</span></h3>
+                <p>
+                    Structured, auditable policy deletion. Paste policy names (one per line), resolve them against the tenant, then back up and permanently delete. A backup target (local folder or Azure Blob via SAS URL) is <strong>required</strong> &mdash; the backup JSON captures each policy's full settings plus its assignment groups and filters, so any deletion can be reversed via Policy Import. If any backup fails, nothing is deleted. The flow is strictly Resolve &rarr; Preview &rarr; Explicit Confirmation &rarr; Delete.
+                </p>
+                <figure>
+                    <img src="policy-cleanup.png" alt="Policy Cleanup interface">
+                    <figcaption>Backup-first deletion &mdash; no backup, no delete</figcaption>
+                </figure>
+
+                <h3>Run Remediation <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.8</span></h3>
+                <p>
+                    Run a detection/remediation script on-demand against the devices you list &mdash; the same remote action as the Intune console's "Run remediation", but in bulk. Pick a script from the pre-loaded dropdown with type-ahead keyword filtering, then input UPNs, Device Names, Entra Device IDs, Intune Device IDs, Serial Numbers, or Groups (user inputs resolve to their devices). For safety this operation targets <strong>company-owned Windows devices only</strong> &mdash; personal or non-Windows devices are resolved but automatically skipped and disclosed in the confirmation summary. A full validation workflow shows the selected script and every resolved device with Proceed/Cancel before anything runs.
+                </p>
+                <figure>
+                    <img src="run-remediation.png" alt="Run Remediation interface">
+                    <figcaption>On-demand remediation at scale with a corporate-Windows-only safeguard</figcaption>
+                </figure>
+
+                <h3>Bulk Sync <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.8</span></h3>
+                <p>
+                    Trigger an Intune device sync across bulk devices &mdash; all platforms, corporate and personal, with an optional platform filter. Same flexible input types as Run Remediation and the same validation workflow before the sync fires.
+                </p>
             </section>
 
             <section id="productivity">
@@ -906,8 +964,38 @@
                             <td>Read Intune managed and discovered apps, app assignments, and app configurations</td>
                         </tr>
                         <tr>
+                            <td><code>BitlockerKey.ReadBasic.All</code></td>
+                            <td>Enumerate BitLocker recovery key metadata for the Missing BitLocker Keys audit &mdash; key material is never read</td>
+                        </tr>
+                        <tr>
                             <td><code>offline_access</code></td>
                             <td>Maintain refresh token for persistent session</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <h3>Feature-Based Write Permissions</h3>
+                <p>Only needed if you use the corresponding operation &mdash; keeping with the least-privilege model, leave these out until a workflow demands them:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Permission</th>
+                            <th>Required by</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>DeviceManagementConfiguration.ReadWrite.All</code></td>
+                            <td>Policy Import (create policies/scripts), Policy Cleanup (delete policies)</td>
+                        </tr>
+                        <tr>
+                            <td><code>DeviceManagementServiceConfig.ReadWrite.All</code></td>
+                            <td>Policy Import of classic Autopilot Deployment Profiles and Enrollment Status Pages</td>
+                        </tr>
+                        <tr>
+                            <td><code>DeviceManagementManagedDevices.PrivilegedOperations.All</code></td>
+                            <td>Run Remediation (on-demand remediation) and Bulk Sync (device sync remote actions)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -934,7 +1022,7 @@
 
                 <h3>Preventing Accidental Actions</h3>
                 <p>
-                    Every write operation in MDM-ODA is guarded by a multi-step validation pipeline. Before any change is committed to Entra or Intune, the tool enforces preview-before-write — users see exactly what will happen before it happens. Confirmation dialogs with explicit action summaries ensure that bulk operations like adding 50 devices to a group or setting owners on 20 groups cannot fire by a stray click. The Stop button is wired into every background runspace, allowing graceful cancellation mid-operation. Clear Inputs resets the entire page state without side effects. These aren't afterthoughts — they're core design decisions baked into every panel from the ground up.
+                    Every write operation in MDM-ODA is guarded by a multi-step validation pipeline. Before any change is committed to Entra or Intune, the tool enforces preview-before-write — users see exactly what will happen before it happens. Confirmation dialogs with explicit action summaries ensure that bulk operations like adding 50 devices to a group or setting owners on 20 groups cannot fire by a stray click. The Stop button is wired into every background runspace, allowing graceful cancellation mid-operation. Clear Inputs resets the entire page state without side effects. These aren't afterthoughts — they're core design decisions baked into every panel from the ground up. The newer destructive and high-impact operations raise the bar further: Policy Cleanup refuses to delete anything unless a verified backup (including assignment groups and filters) succeeds first, and Run Remediation is hard-scoped to company-owned Windows devices with skipped devices disclosed in the confirmation summary.
                 </p>
 
                 <h3>Delegated Auth Flow — Least Privilege by Design</h3>
@@ -1008,55 +1096,70 @@
             </section>
 
             <section id="changelog">
-                <h2>Changelog — V0.7</h2>
+                <h2>Changelog — V0.8</h2>
 
                 <h3>New Features</h3>
 
-                <h4>Get App Info <span style="display:inline-block;background:#10b981;color:white;font-size:0.7em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:6px;">Major Enhancement</span></h4>
+                <h4>Policy Export &amp; Policy Import</h4>
                 <ul>
-                    <li>Get Discovered or Managed (or both) apps — instant app insights to know what apps were (or were not) deployed via Intune</li>
-                    <li>Managed App Assignment details including filters and filter modes</li>
-                    <li>Ability to filter based on Platform, Ownership, and Keywords</li>
-                    <li>Input Devices or Users (devices resolved based on filters) or Groups (resolves nested groups for Users/Devices)</li>
+                    <li>Export policies + full underlying settings to portable JSON across 7 policy families — Device Configurations, Settings Catalog &amp; Endpoint Security, Administrative Templates, PowerShell Scripts, Detection/Remediation Scripts, Autopilot Deployment Profiles, Enrollment Status Pages</li>
+                    <li>Local folder always; optional Azure Blob container upload/import via SAS URL</li>
+                    <li>Import preview with planned changes; policies created as NEW objects with an "(Imported)" suffix — existing policies never touched, assignments never imported</li>
+                    <li>Content-based duplicate detection (settings hash, not name) with Proceed / Skip Duplicates workflow</li>
+                    <li>Custom/ingested ADMX administrative templates: ADMX+ADML bundled on export, automatically ingested and definition-remapped on import</li>
+                    <li>Cross-tenant dependency detection with actionable Skipped reasons (reusable settings groups, missing custom ADMX)</li>
+                    <li>Multi-keyword comma-separated filtering honored across Local and Blob operations</li>
                 </ul>
 
-                <h4>Search Entra Objects</h4>
+                <h4>Duplicate Policy Review</h4>
                 <ul>
-                    <li>Now capable of handling multiple objects of multiple types simultaneously with deduplication</li>
-                    <li>Get Manager checkbox — adds Manager UPN column for User objects</li>
+                    <li>Content-based duplicate detection across all policy types — finds policies whose settings are identical even when names differ</li>
+                    <li>Output includes Assignment Groups and Last Modified for consolidation decisions</li>
                 </ul>
 
-                <h4>Find Groups by Owners</h4>
+                <h4>Policy Cleanup</h4>
                 <ul>
-                    <li>Will now show all groups without an owner when searched without an input UPN — powerful audit capability for orphaned groups</li>
+                    <li>Backup-and-delete workflow: Resolve → Preview → Explicit Confirm → Delete</li>
+                    <li>Backup to local folder or Azure Blob is mandatory and captures settings + assignment groups + filters per policy; delete does not proceed if any backup fails</li>
                 </ul>
 
-                <h4>Get Policy Info (formerly "Get Policy Assignments")</h4>
+                <h4>Run Remediation &amp; Bulk Sync</h4>
                 <ul>
-                    <li>Renamed from "Get Policy Assignments" to "Get Policy Info"</li>
-                    <li>Compliance Policy assignments including filters and filter modes</li>
-                    <li>Classic Autopilot Profile assignment report with Description and Deployment Mode columns</li>
-                    <li>Autopilot Device Preparation assignment report</li>
-                    <li>ESP assignment report including priority column</li>
+                    <li>On-demand detection/remediation script execution against listed devices — console-parity remote action, results in seconds</li>
+                    <li>Script dropdown with type-ahead keyword filter; inputs: UPN / Device Name / Entra Device ID / Intune Device ID / Serial Number / Groups</li>
+                    <li>Safeguard: Run Remediation targets corporate-owned Windows devices only — everything else auto-skipped and disclosed in the confirmation summary</li>
+                    <li>Bulk Sync: Intune device sync across all platforms and ownership types with platform filter and validation workflow</li>
+                </ul>
+
+                <h4>Missing BitLocker Keys</h4>
+                <ul>
+                    <li>Audit Windows devices missing an OS drive BitLocker recovery key in Entra</li>
+                    <li>"Key older than N days" mode (0&ndash;60) for escrow-freshness auditing</li>
+                    <li>Ownership, exclusion, and Intune enrollment filters; full Get Device Info column set</li>
+                    <li>Reads key metadata only — never retrieves recovery key material</li>
                 </ul>
 
                 <h3>Improvements</h3>
                 <ul>
-                    <li>Horizontal scroll bar added to all output tables across all blades</li>
-                    <li>Resizable columns on all output DataGrids for better data visibility</li>
+                    <li>Get Device Info: tenant-wide device pre-fetch eliminates per-device Graph round-trips for large queries</li>
+                    <li>Verbose logging: buffered writer with quiet mode for high-volume operations</li>
+                    <li>Real HTTP status capture and failure diagnostics dumps for import troubleshooting</li>
+                    <li>Graceful Stop across all long-running operations</li>
+                </ul>
+
+                <h3>Previous Release — V0.7</h3>
+                <ul>
+                    <li><strong>Get App Info</strong> — Discovered/Managed apps, assignment details with filters and filter modes, Platform/Ownership/Keyword filters, Device/User/Group inputs</li>
+                    <li><strong>Search Entra Objects</strong> — bulk multi-type input with deduplication; Get Manager checkbox</li>
+                    <li><strong>Find Groups by Owners</strong> — empty input returns all groups without an owner</li>
+                    <li><strong>Get Policy Info</strong> (renamed from "Get Policy Assignments") — Compliance Policy assignments, classic Autopilot Profile report, Autopilot Device Preparation report, ESP report with priority</li>
+                    <li><strong>Improvements</strong> — horizontal scroll bars and resizable columns on all output tables</li>
                 </ul>
             </section>
 
             <section id="roadmap">
                 <h2>Roadmap</h2>
                 <p>MDM-ODA is actively evolving. Here's what's planned for upcoming releases:</p>
-
-                <h3>Input-Based Bulk Actions</h3>
-                <p>Excluding destructive actions like Wipe/Delete — focused on safe, repeatable operations:</p>
-                <ul>
-                    <li><strong>Sync</strong> — Trigger device sync across bulk devices on-demand</li>
-                    <li><strong>Remediation</strong> — Execute remediation scripts at scale with targeted input</li>
-                </ul>
 
                 <h3>Comprehensive Update Insights</h3>
                 <p>Deep visibility into the Windows Update landscape across your fleet:</p>
@@ -1078,6 +1181,9 @@
                 <h3>Advanced Policy Management Actions</h3>
                 <p>Extended policy operations beyond read-only insights — targeted modifications, cloning, and bulk assignment management.</p>
 
+                <h3>Reusable Settings Dependencies</h3>
+                <p>Import support for reusable settings groups referenced by Settings Catalog policies — completing cross-tenant migration coverage for policies with shared dependencies.</p>
+
                 <h3>Advanced Dynamic Group Query Builder</h3>
                 <p>A visual query builder for constructing complex dynamic membership rules with syntax validation, preview, and testing before applying to groups.</p>
 
@@ -1095,6 +1201,9 @@
                 <span class="tag">Group Management</span>
                 <span class="tag">Device Management</span>
                 <span class="tag">Policy Assignments</span>
+                <span class="tag">Policy Migration</span>
+                <span class="tag">Remediation</span>
+                <span class="tag">BitLocker</span>
                 <span class="tag">Open Source</span>
             </div>
         </div>
@@ -1106,7 +1215,7 @@
 
     <footer>
         <div class="container">
-            <p>Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — April 2026</p>
+            <p>Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — July 2026</p>
             <p><a href="https://satishsinghi-gh.github.io/MDM-ODA/">Blog Home</a> | <a href="https://github.com/satishsinghi-gh/mdm-oda">GitHub Repository</a></p>
             <p style="font-size: 0.85rem; color: #9ca3af; margin-top: 1.5rem;">
                 MDM-ODA is an open-source tool built to empower IT professionals with granular control and insights into their Entra ID and Intune deployments. Built with attention to security, usability, and operational excellence.
