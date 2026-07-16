@@ -2,7 +2,7 @@
 
 **Live Analytics, Insights & Actions for Entra ID and Intune**
 
-[![Version](https://img.shields.io/badge/Version-0.8-green)](https://github.com/satishsinghi-gh/mdm-oda/releases)
+[![Version](https://img.shields.io/badge/Version-0.81-green)](https://github.com/satishsinghi-gh/mdm-oda/releases)
 [![PowerShell 7](https://img.shields.io/badge/PowerShell-7.x-blue?logo=powershell&logoColor=white)](https://learn.microsoft.com/en-us/powershell/)
 [![WPF](https://img.shields.io/badge/UI-WPF-blueviolet)](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![Microsoft Graph](https://img.shields.io/badge/API-Microsoft%20Graph-0078D4?logo=microsoft)](https://learn.microsoft.com/en-us/graph/)
@@ -189,6 +189,20 @@ MDM-ODA is a PowerShell & WPF based plug-n-play tool for Entra & Intune on-deman
 *Trigger an Intune device sync across bulk devices — all platforms, corporate and personal, with an optional platform filter. Same flexible input types as Run Remediation and the same validation workflow before the sync fires.*
 </details>
 
+<details>
+<summary><strong>Bulk Autopilot Registration</strong> — Register hardware hashes to Autopilot from CSVs (NEW in V0.81)</summary>
+
+![Bulk Autopilot Registration](bulk-autopilot-registration.png)
+*Register devices to Windows Autopilot in bulk from hardware hash CSV files (Get-WindowsAutopilotInfo format). Select CSVs from this PC (multi-select) or from an Azure Blob container via SAS URL. A Group Tag inside a CSV wins; the typed Group Tag fills the blanks. Staged workflow: select the source, click Bulk Register, review the full validation summary (blank serials, invalid hashes and duplicate serials are flagged and skipped), then Confirm to execute. Per-device results with real HTTP status, and a single Autopilot sync is triggered after posting. Import-only — existing Autopilot registrations are never modified.*
+</details>
+
+<details>
+<summary><strong>Get Autopilot Status</strong> — Check Autopilot registration + Intune enrollment by input (NEW in V0.81)</summary>
+
+![Get Autopilot Status](get-autopilot-status.png)
+*Check Windows Autopilot registration status for UPNs, Entra Device IDs, Serial Numbers, or Groups (one per line). Queries Autopilot directly — devices registered in Autopilot but not yet enrolled in Intune are still reported. Output columns: Input, Serial Number, Device Name, Autopilot Registered (Yes/No), Group Tag, and Intune Enrolled (Yes/No, verified independently against Intune). Full table toolbar with keyword filter, copy and XLSX export.*
+</details>
+
 ## Productivity Features
 
 <details>
@@ -281,6 +295,7 @@ git clone https://github.com/satishsinghi-gh/mdm-oda.git
 | `DeviceManagementManagedDevices.Read.All` | Query managed devices by Azure AD device ID or serial number |
 | `DeviceManagementApps.Read.All` | Read Intune managed and discovered apps, app assignments, and configurations |
 | `BitlockerKey.ReadBasic.All` | Enumerate BitLocker recovery key metadata for the Missing BitLocker Keys audit — key material is never read (use `BitlockerKey.Read.All` only if your tenant policy requires it) |
+| `DeviceManagementServiceConfig.Read.All` | Read Autopilot device identities for Get Autopilot Status and Device Info Autopilot columns (covered by the ReadWrite variant if present) |
 | `offline_access` | Maintain refresh token for persistent session |
 
 ### Delegated App Permissions — Feature-based (write)
@@ -290,7 +305,7 @@ Only needed if you use the corresponding operation:
 | Permission | Required by |
 |---|---|
 | `DeviceManagementConfiguration.ReadWrite.All` | Policy Import (create policies/scripts), Policy Cleanup (delete policies) |
-| `DeviceManagementServiceConfig.ReadWrite.All` | Policy Import of classic Autopilot Deployment Profiles and Enrollment Status Pages |
+| `DeviceManagementServiceConfig.ReadWrite.All` | Policy Import of classic Autopilot Deployment Profiles and Enrollment Status Pages; Bulk Autopilot Registration (hardware hash import) |
 | `DeviceManagementManagedDevices.PrivilegedOperations.All` | Run Remediation (on-demand remediation) and Bulk Sync (device sync remote actions) |
 
 > **Note:** The documented least-privileged permissions for group write operations are `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`. However, based on testing, group owners with scoped Intune RBAC roles can perform all write operations with only the read-only scopes above. If you want to guarantee write access regardless of ownership, add `Group.ReadWrite.All` and `GroupMember.ReadWrite.All`.
@@ -308,6 +323,25 @@ ms-appx-web://Microsoft.AAD.BrokerPlugin/{Client-ID}
 ```
 
 Replace `{Client-ID}` with your actual Application (client) ID from Entra.
+
+## Changelog — V0.81
+
+### New Features
+
+**Bulk Autopilot Registration**
+- Bulk-register devices to Windows Autopilot from hardware hash CSVs (Get-WindowsAutopilotInfo format) — from this PC (multi-select) or an Azure Blob container via SAS URL
+- Group Tag box fills blanks; CSV Group Tag wins where present
+- Staged workflow with full validation preview (blank serials, invalid hashes, duplicate serials flagged) and explicit confirmation before anything is registered
+- Per-device results with real HTTP status; one Autopilot sync triggered after posting; import-only (existing registrations never modified)
+
+**Get Autopilot Status**
+- Query Autopilot registration status by UPN / Entra Device ID / Serial Number / Group
+- Queries Autopilot directly, so devices registered but not yet enrolled in Intune are still reported
+- Output: Input, Serial Number, Device Name, Autopilot Registered (Yes/No), Group Tag, Intune Enrolled (Yes/No — verified independently against Intune)
+
+### Improvements
+
+- Get Device Info: Autopilot Group Tag and Profile Status now match by serial number first (with Entra Device ID fallback) — significantly more reliable reporting
 
 ## Changelog — V0.8
 

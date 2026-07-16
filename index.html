@@ -563,7 +563,7 @@
 <body>
     <nav>
         <div class="container">
-            <div class="logo">MDM-ODA</div><span style="color:#5DC98B;font-size:0.75rem;font-weight:500;margin-left:0.5rem;">v0.8</span>
+            <div class="logo">MDM-ODA</div><span style="color:#5DC98B;font-size:0.75rem;font-weight:500;margin-left:0.5rem;">v0.81</span>
         </div>
     </nav>
 
@@ -571,7 +571,7 @@
         <div class="container">
             <div class="hero-badge">Intune & Entra ID Automation</div>
             <h1>MDM On-Demand Actions <span style="color:#FFD700;font-size:0.85em;">&#x26A1;</span></h1>
-            <p>Live Analytics, Insights & Actions</p><p style="font-size:0.9rem;opacity:0.85;margin-top:0.5rem;">Version 0.8</p>
+            <p>Live Analytics, Insights & Actions</p><p style="font-size:0.9rem;opacity:0.85;margin-top:0.5rem;">Version 0.81</p>
             <div class="hero-meta">
                 Written by <a href="https://www.linkedin.com/in/satish-singhi-791163167/">Satish Singhi</a> — July 2026 |
                 <a href="https://github.com/satishsinghi-gh/mdm-oda">GitHub Repository</a>
@@ -594,7 +594,7 @@
                     <li><a href="#safeguards">Safety, Validation & Auth Design</a></li>
                     <li><a href="#getting-started">Getting Started</a></li>
                     <li><a href="#roadmap">Roadmap</a></li>
-                    <li><a href="#changelog">Changelog — V0.8</a></li>
+                    <li><a href="#changelog">Changelog — V0.81</a></li>
                 </ol>
             </div>
 
@@ -812,6 +812,24 @@
                 <p>
                     Trigger an Intune device sync across bulk devices &mdash; all platforms, corporate and personal, with an optional platform filter. Same flexible input types as Run Remediation and the same validation workflow before the sync fires.
                 </p>
+
+                <h3>Bulk Autopilot Registration <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.81</span></h3>
+                <p>
+                    Register devices to Windows Autopilot in bulk from hardware hash CSV files (Get-WindowsAutopilotInfo format: Device Serial Number, Windows Product ID, Hardware Hash, optional Group Tag). Select CSVs from this PC (multi-select) or from an Azure Blob container via a SAS URL. A Group Tag inside a CSV wins; the typed Group Tag fills the blanks. The workflow is staged and safe: select the source, click <strong>Bulk Register</strong>, review the validation summary &mdash; blank serials, invalid hashes and duplicate serials are flagged and skipped &mdash; then explicitly confirm. Each device posts with real HTTP status reporting, and a single Autopilot sync is triggered after the batch. Import-only: existing Autopilot registrations are never modified.
+                </p>
+                <figure>
+                    <img src="bulk-autopilot-registration.png" alt="Bulk Autopilot Registration interface">
+                    <figcaption>Hardware hash registration at scale &mdash; validate, confirm, register, sync</figcaption>
+                </figure>
+
+                <h3>Get Autopilot Status <span style="display:inline-block;background:#10b981;color:white;font-size:0.65em;padding:2px 8px;border-radius:10px;vertical-align:middle;margin-left:8px;">NEW in V0.81</span></h3>
+                <p>
+                    Check Windows Autopilot registration status for the devices you specify &mdash; UPNs, Entra Device IDs, Serial Numbers, or Groups (one per line). The tool queries Autopilot directly, so devices registered in Autopilot but not yet enrolled in Intune are still reported. Output shows Input, Serial Number, Device Name, <strong>Autopilot Registered (Yes/No)</strong>, <strong>Group Tag</strong>, and <strong>Intune Enrolled (Yes/No)</strong> &mdash; the enrollment state is verified independently against Intune, so registered-but-not-enrolled and enrolled-but-not-registered devices are both surfaced. Full table toolbar with keyword filter, copy and XLSX export.
+                </p>
+                <figure>
+                    <img src="get-autopilot-status.png" alt="Get Autopilot Status interface">
+                    <figcaption>Autopilot registration and Intune enrollment at a glance</figcaption>
+                </figure>
             </section>
 
             <section id="productivity">
@@ -968,6 +986,10 @@
                             <td>Enumerate BitLocker recovery key metadata for the Missing BitLocker Keys audit &mdash; key material is never read</td>
                         </tr>
                         <tr>
+                            <td><code>DeviceManagementServiceConfig.Read.All</code></td>
+                            <td>Read Autopilot device identities for Get Autopilot Status and Device Info Autopilot columns (covered by the ReadWrite variant if present)</td>
+                        </tr>
+                        <tr>
                             <td><code>offline_access</code></td>
                             <td>Maintain refresh token for persistent session</td>
                         </tr>
@@ -991,7 +1013,7 @@
                         </tr>
                         <tr>
                             <td><code>DeviceManagementServiceConfig.ReadWrite.All</code></td>
-                            <td>Policy Import of classic Autopilot Deployment Profiles and Enrollment Status Pages</td>
+                            <td>Policy Import of classic Autopilot Deployment Profiles and Enrollment Status Pages; Bulk Autopilot Registration (hardware hash import)</td>
                         </tr>
                         <tr>
                             <td><code>DeviceManagementManagedDevices.PrivilegedOperations.All</code></td>
@@ -1096,7 +1118,31 @@
             </section>
 
             <section id="changelog">
-                <h2>Changelog — V0.8</h2>
+                <h2>Changelog — V0.81</h2>
+
+                <h3>New Features</h3>
+
+                <h4>Bulk Autopilot Registration</h4>
+                <ul>
+                    <li>Bulk-register devices to Windows Autopilot from hardware hash CSVs — from this PC (multi-select) or an Azure Blob container via SAS URL</li>
+                    <li>Group Tag box fills blanks; CSV Group Tag wins where present</li>
+                    <li>Staged workflow with full validation preview (blank serials, invalid hashes, duplicate serials flagged) and explicit confirmation</li>
+                    <li>Per-device results with real HTTP status; one Autopilot sync triggered after posting; import-only — existing registrations never modified</li>
+                </ul>
+
+                <h4>Get Autopilot Status</h4>
+                <ul>
+                    <li>Query Autopilot registration status by UPN / Entra Device ID / Serial Number / Group</li>
+                    <li>Queries Autopilot directly — devices registered but not yet enrolled in Intune are still reported</li>
+                    <li>Output: Input, Serial Number, Device Name, Autopilot Registered (Yes/No), Group Tag, Intune Enrolled (Yes/No — verified independently against Intune)</li>
+                </ul>
+
+                <h3>Improvements</h3>
+                <ul>
+                    <li>Get Device Info: Autopilot Group Tag and Profile Status now match by serial number first (Entra Device ID fallback) — significantly more reliable reporting</li>
+                </ul>
+
+                <h3>Previous Release — V0.8</h3>
 
                 <h3>New Features</h3>
 
